@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GymOS - Transforma tu cuerpo</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+        
+        body {
+            font-family: 'Geist', sans-serif;
+            background-color: #131315;
+            color: #e5e1e4;
+            overflow-x: hidden;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .glass-card {
+            background: rgba(32, 31, 34, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(60, 74, 66, 0.3);
+        }
+
+        .popular-glow {
+            box-shadow: 0 0 20px rgba(78, 222, 163, 0.15);
+        }
+
+        .emerald-gradient {
+            background: linear-gradient(135deg, #4edea3 0%, #10b981 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#0e0e10",
+                      "secondary": "#c0c1ff",
+                      "outline-variant": "#3c4a42",
+                      "on-tertiary-fixed-variant": "#93000b",
+                      "on-secondary-container": "#b0b2ff",
+                      "surface-variant": "#353437",
+                      "on-tertiary-container": "#790007",
+                      "surface-container": "#201f22",
+                      "surface-bright": "#39393b",
+                      "error": "#ffb4ab",
+                      "outline": "#86948a",
+                      "on-surface-variant": "#bbcabf",
+                      "on-primary": "#003824",
+                      "on-primary-container": "#00422b",
+                      "background": "#131315",
+                      "surface-container-low": "#1c1b1d",
+                      "surface": "#131315",
+                      "tertiary-fixed-dim": "#ffb4ab",
+                      "inverse-primary": "#006c49",
+                      "error-container": "#93000a",
+                      "tertiary-container": "#ff7a6e",
+                      "primary-container": "#10b981",
+                      "secondary-container": "#3131c0",
+                      "on-background": "#e5e1e4",
+                      "inverse-on-surface": "#313032",
+                      "on-secondary": "#1000a9",
+                      "tertiary": "#ffb4ab",
+                      "on-primary-fixed-variant": "#005236",
+                      "secondary-fixed-dim": "#c0c1ff",
+                      "tertiary-fixed": "#ffdad6",
+                      "on-tertiary": "#690005",
+                      "surface-container-highest": "#353437",
+                      "primary-fixed-dim": "#4edea3",
+                      "on-primary-fixed": "#002113",
+                      "primary": "#4edea3",
+                      "on-surface": "#e5e1e4",
+                      "on-secondary-fixed": "#07006c",
+                      "surface-dim": "#131315",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#2f2ebe",
+                      "primary-fixed": "#6ffbbe",
+                      "on-tertiary-fixed": "#410002",
+                      "inverse-surface": "#e5e1e4",
+                      "secondary-fixed": "#e1e0ff",
+                      "surface-tint": "#4edea3",
+                      "surface-container-high": "#2a2a2c",
+                      "on-error": "#690005"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "gutter": "16px",
+                      "base": "4px",
+                      "sidebar-width": "280px",
+                      "sidebar-collapsed": "80px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Geist"],
+                      "headline-xl": ["Geist"],
+                      "label-sm": ["Geist"],
+                      "body-lg": ["Geist"],
+                      "body-sm": ["Geist"],
+                      "body-md": ["Geist"],
+                      "headline-md": ["Geist"],
+                      "label-md": ["Geist"],
+                      "headline-lg-mobile": ["Geist"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-md": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full flex items-center justify-between px-container-padding h-16 bg-surface/95 dark:bg-surface/95 backdrop-blur-sm border-b border-outline-variant dark:border-outline-variant z-50">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md-mobile md:text-headline-md font-bold text-primary dark:text-primary">GymOS</span>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#features">Features</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-200" href="#pricing">Pricing</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors">Login</button>
+<button class="bg-primary-container text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg active:scale-95 transition-transform">Inscríbete Ya</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-20 px-container-padding flex flex-col items-center text-center overflow-hidden">
+<!-- Background Glow Decor -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px] -z-10"></div>
+<div class="max-w-4xl mx-auto space-y-6">
+<h1 class="font-headline-xl text-headline-lg-mobile md:text-headline-xl text-on-surface leading-tight">
+                Transforma tu cuerpo, <br/>
+<span class="text-primary">domina tu mente</span>
+</h1>
+<p class="font-body-lg text-body-md md:text-body-lg text-on-surface-variant max-w-2xl mx-auto">
+                La plataforma de gestión fitness líder en Colombia. Entrena en las mejores instalaciones con tecnología de punta y seguimiento personalizado.
+            </p>
+<div class="flex flex-col md:flex-row items-center justify-center gap-4 pt-4">
+<a class="w-full md:w-auto bg-primary text-on-primary font-label-md text-label-md px-8 py-4 rounded-lg font-bold hover:opacity-90 transition-all active:scale-95" href="#pricing">
+                    Ver Planes
+                </a>
+<a class="w-full md:w-auto flex items-center justify-center gap-2 border border-outline text-on-surface font-label-md text-label-md px-8 py-4 rounded-lg hover:bg-surface-variant transition-all active:scale-95" href="https://wa.me/573000000000">
+<span class="material-symbols-outlined">chat</span>
+                    Hablar con un Asesor
+                </a>
+</div>
+</div>
+<!-- Hero Image Context -->
+<div class="mt-16 w-full max-w-5xl rounded-xl overflow-hidden border border-outline-variant shadow-2xl">
+<img class="w-full h-[300px] md:h-[500px] object-cover" data-alt="A cinematic, high-contrast photograph of a sleek, dark-themed modern gym interior in Bogota. The space features emerald green neon accents reflecting off high-end matte black weightlifting equipment and professional turf. Large industrial windows allow moody evening light to filter in, creating a high-fidelity tech-forward atmosphere. The visual style is elite, professional, and powerful, perfectly matching the GymOS brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiW_zmXwyNpEgVti8-MO89kPpPyJDZ08OnDChf2tJH5XPY_tAb67wzFpuSubXho8KEq7NGAxaF1rlk2yLSPmcX52guK7N_awR4HX7GAPikWhQA6Y7PuvIQvATERzu-Wcn98NXA7BvHuYSXX16dBcEDyKStuufmvfgWnP6KjiV-STH79qSA_HntdwOpa3nthB1v4Uyk1RSYVJoHHukPP1Q2_KR4p3NIvTyz6Ux1Ze75nD4aEaWAR5hukNhyn-tTcw50QP0ujFgmYpgt"/>
+</div>
+</section>
+<!-- Features Section -->
+<section class="py-20 px-container-padding bg-surface-container-low" id="features">
+<div class="max-w-6xl mx-auto">
+<div class="text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Experiencia de Elite</h2>
+<div class="h-1 w-20 bg-primary mx-auto rounded-full"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Card 1 -->
+<div class="glass-card p-8 rounded-xl space-y-4 hover:border-primary/50 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="fitness_center">fitness_center</span>
+</div>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface">Modern Equipment</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Máquinas de última generación con integración GymOS para seguimiento de carga y repeticiones en tiempo real.
+                    </p>
+</div>
+<!-- Card 2 -->
+<div class="glass-card p-8 rounded-xl space-y-4 hover:border-primary/50 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+</div>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface">Group Classes</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Desde Yoga hasta HIIT de alta intensidad. Sesiones dirigidas por expertos para motivarte al máximo nivel.
+                    </p>
+</div>
+<!-- Card 3 -->
+<div class="glass-card p-8 rounded-xl space-y-4 hover:border-primary/50 transition-colors group">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<h3 class="font-headline-md text-headline-md-mobile text-on-surface">Certified Trainers</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                        Nuestro equipo cuenta con certificaciones internacionales para garantizar resultados seguros y efectivos.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing Section -->
+<section class="py-24 px-container-padding" id="pricing">
+<div class="max-w-6xl mx-auto">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface">Planes a tu Medida</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">Invierte en tu versión más fuerte hoy mismo.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-end">
+<!-- Plan 1 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant space-y-6">
+<div>
+<h4 class="font-label-md text-label-md text-primary tracking-widest uppercase">Entrada Simple</h4>
+<p class="font-headline-md text-headline-md mt-2">Pase Diario</p>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-bold text-on-surface">$15.000</span>
+<span class="text-on-surface-variant font-body-sm">/día</span>
+</div>
+<ul class="space-y-3 font-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Acceso total 1 día</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Uso de lockers</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Duchas premium</li>
+</ul>
+<button class="w-full border border-primary text-primary font-label-md py-3 rounded-lg hover:bg-primary/10 transition-all">Elegir Plan</button>
+</div>
+<!-- Plan 2 (Popular) -->
+<div class="bg-surface-container-high p-8 rounded-xl border-2 border-primary popular-glow space-y-6 relative md:scale-105 z-10">
+<div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-tighter">
+                        MÁS POPULAR
+                    </div>
+<div>
+<h4 class="font-label-md text-label-md text-primary tracking-widest uppercase">El Favorito</h4>
+<p class="font-headline-md text-headline-md mt-2">Mensualidad General</p>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-bold text-on-surface">$85.000</span>
+<span class="text-on-surface-variant font-body-sm">/mes</span>
+</div>
+<ul class="space-y-3 font-body-sm text-on-surface">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Acceso ilimitado 24/7</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Todas las clases grupales</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Evaluación física mensual</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> App de seguimiento GymOS</li>
+</ul>
+<button class="w-full bg-primary text-on-primary font-label-md py-4 rounded-lg font-bold hover:brightness-110 transition-all shadow-lg shadow-primary/20">Inscribirme Ahora</button>
+</div>
+<!-- Plan 3 -->
+<div class="bg-surface-container p-8 rounded-xl border border-outline-variant space-y-6">
+<div>
+<h4 class="font-label-md text-label-md text-primary tracking-widest uppercase">Alto Rendimiento</h4>
+<p class="font-headline-md text-headline-md mt-2">Trimestre Black</p>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="text-headline-lg font-bold text-on-surface">$220.000</span>
+<span class="text-on-surface-variant font-body-sm">/3 meses</span>
+</div>
+<ul class="space-y-3 font-body-sm text-on-surface-variant">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Ahorra un 15% vs mensual</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> 2 pases de invitado al mes</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Nutricionista deportivo</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Kit de bienvenida GymOS</li>
+</ul>
+<button class="w-full border border-primary text-primary font-label-md py-3 rounded-lg hover:bg-primary/10 transition-all">Elegir Plan</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full py-12 px-container-padding flex flex-col md:flex-row justify-between gap-gutter bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant">
+<div class="max-w-xs space-y-4">
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">GymOS Colombia</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                © 2024 GymOS Colombia. Sede Principal: Bogotá, Calle 100. Horarios: L-V 5am-10pm, S-D 7am-6pm. Cumplimos con Ley 1581 de 2012 de Habeas Data.
+            </p>
+</div>
+<div class="flex flex-wrap gap-8 md:gap-16">
+<div class="space-y-3">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Siguenos</span>
+<nav class="flex flex-col gap-2">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Facebook</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">LinkedIn</a>
+</nav>
+</div>
+<div class="space-y-3">
+<span class="font-label-sm text-label-sm text-primary uppercase tracking-widest">Legal</span>
+<nav class="flex flex-col gap-2">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terminos</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacidad</a>
+</nav>
+</div>
+</div>
+</footer>
+<!-- Floating Action Button Mobile Only -->
+<a class="md:hidden fixed bottom-6 right-6 w-14 h-14 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-lg z-50 active:scale-90 transition-transform" href="https://wa.me/573000000000">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+</a>
+<script>
+        // Smooth scroll for anchors
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Simple scroll observer for navbar transparency
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-lg', 'bg-surface/100');
+            } else {
+                nav.classList.remove('shadow-lg', 'bg-surface/100');
+            }
+        });
+    </script>
+</body></html>
