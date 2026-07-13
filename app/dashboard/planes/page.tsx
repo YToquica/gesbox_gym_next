@@ -1,30 +1,23 @@
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { PlanesModule } from '@/modules/planes/components/planes-module'
 
-export const revalidate = 0 // Desactivar cache para datos frescos
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function PlanesPage() {
+  // La autenticación y autorización ya están garantizadas por el layout de /dashboard
+  // Solo obtenemos el rol para pasarlo al módulo como prop, sin redirigir
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // 1. Obtener sesión
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
-  // 2. Obtener perfil
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('rol')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile) {
-    redirect('/login')
+  let profile: { rol: string } = { rol: 'admin' }
+  if (user) {
+    const { data: profileData } = await supabase
+      .from('profiles')
+      .select('rol')
+      .eq('id', user.id)
+      .single()
+    if (profileData) profile = profileData
   }
 
   return (

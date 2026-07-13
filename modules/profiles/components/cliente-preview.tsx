@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { 
   X, 
   User, 
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+import { deleteClienteAction } from '../actions'
 
 interface ClientePreviewProps {
   detalles: {
@@ -34,9 +36,13 @@ interface ClientePreviewProps {
   onClose: () => void
   isLoading: boolean
   error: string | null
+  userRole?: string
+  onDeleteSuccess?: () => void
 }
 
-export function ClientePreview({ detalles, onClose, isLoading, error }: ClientePreviewProps) {
+export function ClientePreview({ detalles, onClose, isLoading, error, userRole, onDeleteSuccess }: ClientePreviewProps) {
+  const [isDeleting, setIsDeleting] = useState(false)
+
   // Formatear COP
   const formatCOP = (num: number) => {
     return new Intl.NumberFormat('es-CO', {
@@ -134,12 +140,36 @@ export function ClientePreview({ detalles, onClose, isLoading, error }: ClienteP
     <Card className="h-full border border-border bg-card shadow-sm flex flex-col overflow-hidden">
       {/* Cabecera / Avatar */}
       <CardHeader className="p-5 border-b border-border bg-muted/20 relative">
-        <button
-          onClick={onClose}
-          className="absolute right-4 top-4 p-1 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-        >
-          <X className="h-4.5 w-4.5" />
-        </button>
+        <div className="absolute right-4 top-4 flex items-center gap-2">
+          {userRole === 'admin' && (
+            <Button
+              variant="destructive"
+              size="sm"
+              disabled={isDeleting}
+              onClick={async () => {
+                if (window.confirm('¿Estás seguro de que deseas eliminar este cliente? Esta acción no se puede deshacer.')) {
+                  setIsDeleting(true)
+                  const res = await deleteClienteAction(profile.id)
+                  setIsDeleting(false)
+                  if (res.success) {
+                    onDeleteSuccess?.()
+                  } else {
+                    alert(res.error || 'Error al eliminar el cliente.')
+                  }
+                }
+              }}
+              className="h-7 text-xs px-2"
+            >
+              {isDeleting ? 'Eliminando...' : 'Eliminar'}
+            </Button>
+          )}
+          <button
+            onClick={onClose}
+            className="p-1 rounded-full hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <X className="h-4.5 w-4.5" />
+          </button>
+        </div>
 
         <div className="flex items-center gap-4 pt-2">
           <div className="h-14 w-14 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold text-lg border-2 border-brand-primary/20 shrink-0">

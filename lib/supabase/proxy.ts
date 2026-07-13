@@ -3,9 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
+    request,
   })
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
@@ -13,38 +11,37 @@ export async function updateSession(request: NextRequest) {
     process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY! ||
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-  const isLocalhost = request.nextUrl.hostname === 'localhost' || request.nextUrl.hostname === '127.0.0.1'
-  const isSecure = process.env.NODE_ENV === 'production' && !isLocalhost
-
   const supabase = createServerClient(
     supabaseUrl,
     supabaseAnonKey,
     {
       cookies: {
         getAll() {
-          return request.cookies.getAll()
+          const cookies = request.cookies.getAll()
+          console.log('[DEBUG PROXY] getAll:', cookies)
+          return cookies
         },
         setAll(cookiesToSet: Array<{ name: string; value: string; options: any }>) {
+          console.log('[DEBUG PROXY] setAll:', cookiesToSet)
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value))
           response = NextResponse.next({
             request,
           })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, {
-              ...options,
-              secure: isSecure,
-            } as any)
-          )
+          cookiesToSet.forEach(({ name, value, options }) => {
+            const cookieOptions = { ...options }
+            // Desactivar Secure para que el navegador envíe cookies bajo HTTP (localhost)
+            cookieOptions.secure = false
+            cookieOptions.sameSite = 'lax'
+            response.cookies.set(name, value, cookieOptions as any)
+          })
         },
-      },
-      cookieOptions: {
-        secure: isSecure,
       }
     }
   )
 
   // refresca la sesión si ha expirado
-  await supabase.auth.getUser()
+  const { data: { user }, error } = await supabase.auth.getUser()
+  console.log('[DEBUG PROXY] Auth user:', user ? user.id : null, 'Error:', error)
 
   return response
 }

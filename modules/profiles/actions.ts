@@ -111,3 +111,45 @@ export async function getClienteDetallesAction(profileId: string) {
     return { success: false, error: 'Error de servidor al obtener detalles del cliente.' }
   }
 }
+
+// 3. Eliminar cliente (solo administrador)
+export async function deleteClienteAction(profileId: string) {
+  const supabase = await createClient()
+
+  try {
+    // A. Obtener sesión actual
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return { success: false, error: 'No autenticado.' }
+    }
+
+    // B. Verificar que el usuario actual es administrador
+    const { data: currentUserProfile, error: profileError } = await supabase
+      .from('profiles')
+      .select('rol')
+      .eq('id', user.id)
+      .single()
+
+    if (profileError || !currentUserProfile) {
+      return { success: false, error: 'No se pudo verificar el rol del usuario.' }
+    }
+
+    if (currentUserProfile.rol !== 'admin') {
+      return { success: false, error: 'Acceso denegado. Solo los administradores pueden eliminar usuarios.' }
+    }
+
+    // C. Eliminar el perfil objetivo (asumiendo eliminación en cascada de sus dependencias en la DB)
+    const { error: deleteError } = await supabase
+      .from('profiles')
+      .delete()
+      .eq('id', profileId)
+
+    if (deleteError) {
+      return { success: false, error: 'Error al eliminar el cliente de la base de datos.' }
+    }
+
+    return { success: true }
+  } catch (err) {
+    return { success: false, error: 'Error de servidor al eliminar el cliente.' }
+  }
+}

@@ -1,30 +1,23 @@
-import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { ClientesModule } from '@/modules/profiles/components/clientes-module'
 
-export const revalidate = 0 // Desactivar cache para datos en tiempo real
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
 
 export default async function ClientesPage() {
+  // La autenticación y autorización ya están garantizadas por el layout de /dashboard
+  // Solo obtenemos el rol para pasarlo al módulo como prop, sin redirigir
   const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
 
-  // 1. Obtener sesión
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-
-  if (!user) {
-    redirect('/login')
-  }
-
-  // 2. Obtener perfil
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('rol')
-    .eq('id', user.id)
-    .single()
-
-  if (!profile) {
-    redirect('/login')
+  let userRole = 'admin'
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('rol')
+      .eq('id', user.id)
+      .single()
+    if (profile) userRole = profile.rol
   }
 
   return (
@@ -35,7 +28,7 @@ export default async function ClientesPage() {
         </div>
       </div>
       
-      <ClientesModule />
+      <ClientesModule userRole={userRole} />
     </div>
   )
 }

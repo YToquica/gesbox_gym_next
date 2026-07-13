@@ -19,7 +19,7 @@ export async function loginAction(data: LoginInput) {
 
   try {
     // 2. Intentar iniciar sesión en Supabase Auth
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: signInData, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -42,8 +42,20 @@ export async function loginAction(data: LoginInput) {
       }
     }
 
+    const user = signInData.user
+    let rol = 'cliente'
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('rol')
+        .eq('id', user.id)
+        .single()
+      if (profile) rol = profile.rol
+    }
+
     return {
       success: true,
+      rol,
     }
   } catch (err) {
     return {

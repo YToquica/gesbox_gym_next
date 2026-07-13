@@ -39,9 +39,12 @@ export function useLogin() {
         return
       }
 
-      // Redirigir al inicio o dashboard tras inicio de sesión exitoso
-      router.push('/')
-      router.refresh()
+      // Redirigir según el rol del usuario
+      if (result.rol === 'admin' || result.rol === 'recepcionista') {
+        window.location.href = '/dashboard'
+      } else {
+        window.location.href = '/'
+      }
     })
   }
 

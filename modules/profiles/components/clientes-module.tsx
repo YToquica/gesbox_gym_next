@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export function ClientesModule() {
+export function ClientesModule({ userRole }: { userRole?: string }) {
   const {
     clientes,
     searchQuery,
@@ -27,6 +27,7 @@ export function ClientesModule() {
     detalles,
     isLoadingDetalles,
     detallesError,
+    refetchClientes,
   } = useProfiles()
 
   return (
@@ -162,6 +163,11 @@ export function ClientesModule() {
           onClose={() => setSelectedProfileId(null)}
           isLoading={isLoadingDetalles}
           error={detallesError}
+          userRole={userRole}
+          onDeleteSuccess={() => {
+            setSelectedProfileId(null)
+            refetchClientes()
+          }}
         />
       </div>
 
