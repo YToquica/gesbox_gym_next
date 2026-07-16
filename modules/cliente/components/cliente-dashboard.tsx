@@ -74,11 +74,16 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
-          <Button asChild variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
-            <Link href="/auth/signout">
-              <LogOut className="h-4 w-4 mr-2" />
-              Cerrar Sesión
-            </Link>
+          <Button 
+            variant="outline" 
+            className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+            onClick={async () => {
+              await fetch('/auth/signout', { method: 'POST' })
+              window.location.href = '/login'
+            }}
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Cerrar Sesión
           </Button>
         </div>
       </div>

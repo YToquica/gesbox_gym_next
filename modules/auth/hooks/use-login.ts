@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginInput } from '../schemas'
-import { loginAction } from '../actions'
+import { createClient } from '@/lib/supabase/client'
 
 export function useLogin() {
   const router = useRouter()
@@ -20,27 +20,45 @@ export function useLogin() {
 
   const onSubmit = async (data: LoginInput) => {
     setError(null)
-    
-    startTransition(async () => {
-      const result = await loginAction(data)
 
-      if (!result.success) {
-        setError(result.error || 'Ocurrió un error al iniciar sesión.')
-        
-        // Si hay errores de validación específicos del servidor
-        if (result.errors) {
-          Object.entries(result.errors).forEach(([field, messages]) => {
-            form.setError(field as keyof LoginInput, {
-              type: 'server',
-              message: (messages as string[])[0],
-            })
-          })
+    startTransition(async () => {
+      // 1. Login con el cliente browser — el SDK guarda las cookies
+      //    de sesión automáticamente en el navegador.
+      const supabase = createClient()
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email: data.email,
+        password: data.password,
+      })
+
+      if (signInError || !signInData.user) {
+        let errorMessage = 'Error al iniciar sesión. Por favor, intenta de nuevo.'
+        if (signInError?.status === 400 || signInError?.message?.toLowerCase().includes('invalid login credentials')) {
+          errorMessage = 'Correo electrónico o contraseña incorrectos.'
+        } else if (signInError?.message?.toLowerCase().includes('email not confirmed')) {
+          errorMessage = 'El correo electrónico asociado no ha sido confirmado.'
+        } else if (signInError?.message?.toLowerCase().includes('rate limit')) {
+          errorMessage = 'Demasiados intentos fallidos. Por favor, espera un momento.'
         }
+        setError(errorMessage)
         return
       }
 
-      // Redirigir según el rol del usuario
-      if (result.rol === 'admin' || result.rol === 'recepcionista') {
+      // 2. Consultar el rol usando el cliente browser (el usuario ya está autenticado).
+      //    Se evita usar un Server Action aquí para prevenir que el middleware
+      //    intercepte el POST y lo redirija incorrectamente.
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('rol')
+        .eq('id', signInData.user.id)
+        .single()
+
+      const rol = profile?.rol ?? 'cliente'
+
+      // 3. Sincronizar el estado SSR con la sesión recién creada
+      router.refresh()
+
+      // 4. Redirigir según el rol
+      if (rol === 'admin' || rol === 'recepcionista') {
         window.location.href = '/dashboard'
       } else {
         window.location.href = '/'
@@ -55,3 +73,4 @@ export function useLogin() {
     error,
   }
 }
+

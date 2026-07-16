@@ -125,12 +125,17 @@ export default async function Home() {
                   </span>
                 </div>
 
-                <Button asChild variant="outline" size="sm" className="h-9 gap-1.5 border-border hover:bg-muted text-xs">
-                  <Link href="/auth/signout">
+                <form action="/auth/signout" method="POST">
+                  <Button 
+                    type="submit"
+                    variant="outline" 
+                    size="sm" 
+                    className="h-9 gap-1.5 border-border hover:bg-muted text-xs"
+                  >
                     <LogOut className="h-3.5 w-3.5" />
                     <span className="hidden sm:inline">Cerrar Sesión</span>
-                  </Link>
-                </Button>
+                  </Button>
+                </form>
               </div>
             ) : (
               <Button asChild size="sm" className="h-9 gap-1.5 bg-brand-primary text-white hover:bg-brand-primary/95 text-xs font-semibold">

@@ -159,13 +159,16 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
             </div>
           </div>
 
-          <Link
-            href="/auth/signout"
+          <button
+            onClick={async () => {
+              await fetch('/auth/signout', { method: 'POST' })
+              window.location.href = '/login'
+            }}
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full"
           >
             <LogOut className="h-4 w-4 shrink-0" />
             Cerrar Sesión
-          </Link>
+          </button>
         </div>
       </aside>
 
@@ -243,14 +246,16 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
             </div>
           </div>
 
-          <Link
-            href="/auth/signout"
+          <button
+            onClick={async () => {
+              await fetch('/auth/signout', { method: 'POST' })
+              window.location.href = '/login'
+            }}
             className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full"
-            onClick={toggleSidebar}
           >
             <LogOut className="h-4 w-4 shrink-0" />
             Cerrar Sesión
-          </Link>
+          </button>
         </div>
       </aside>
 

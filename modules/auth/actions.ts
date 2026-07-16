@@ -158,4 +158,17 @@ export async function registerAction(data: RegisterInput) {
     }
   }
 }
-
+/**
+ * Obtiene el rol de un usuario a partir de su ID.
+ * Se usa después del login en cliente para determinar la ruta de redirección
+ * sin exponer la lógica de roles al browser.
+ */
+export async function getRolAction(userId: string): Promise<{ rol: string }> {
+  const supabase = await createClient()
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('rol')
+    .eq('id', userId)
+    .single()
+  return { rol: profile?.rol ?? 'cliente' }
+}
