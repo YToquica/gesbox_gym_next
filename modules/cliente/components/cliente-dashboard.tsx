@@ -4,7 +4,6 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, XCircle, Clock, Shield, LogOut, Check, ArrowRight } from 'lucide-react'
-import { cancelarMembresiaAction } from '../actions'
 import Link from 'next/link'
 
 export function ClienteDashboard({ initialData }: { initialData: any }) {
@@ -24,24 +23,6 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
   }
 
   const membresiaActiva = membresias.find((m: any) => m.estado === 'activo')
-
-  const handleCancelar = async (membresiaId: string) => {
-    if (!window.confirm('¿Estás seguro de que deseas cancelar tu membresía actual? Esta acción la marcará como vencida.')) return
-    
-    setErrorMsg('')
-    setSuccessMsg('')
-    setLoadingAction(true)
-    const res = await cancelarMembresiaAction(membresiaId)
-    setLoadingAction(false)
-
-    if (res.success) {
-      setSuccessMsg('Membresía cancelada correctamente.')
-      // Actualizar vista local
-      setMembresias(membresias.map((m: any) => m.id === membresiaId ? { ...m, estado: 'vencido' } : m))
-    } else {
-      setErrorMsg(res.error || 'Error al cancelar la membresía.')
-    }
-  }
 
   const handleAdquirir = async (planId: string) => {
     setErrorMsg('')
@@ -137,19 +118,6 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
                   </div>
                 </div>
 
-                <div className="pt-4">
-                  <Button 
-                    variant="destructive" 
-                    className="w-full text-xs font-semibold h-10"
-                    disabled={loadingAction}
-                    onClick={() => handleCancelar(membresiaActiva.id)}
-                  >
-                    {loadingAction ? 'Procesando...' : 'Cancelar Membresía'}
-                  </Button>
-                  <p className="text-[10px] text-muted-foreground text-center mt-2">
-                    Si cancelas, perderás el acceso inmediatamente.
-                  </p>
-                </div>
               </CardContent>
             </Card>
           ) : (

@@ -196,6 +196,11 @@ export function LoginForm() {
                         {loginErrors.password.message}
                       </p>
                     )}
+                    <div className="flex justify-end pt-0.5">
+                      <a href="#" onClick={(e) => { e.preventDefault(); alert('Funcionalidad en desarrollo.') }} className="text-[11px] font-medium text-brand-primary hover:underline">
+                        ¿Olvidaste tu contraseña?
+                      </a>
+                    </div>
                   </div>
 
                   {/* Botón de Enviar */}
