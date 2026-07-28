@@ -126,10 +126,10 @@ export default async function Home() {
                 </div>
 
                 <form action="/auth/signout" method="POST">
-                  <Button 
+                  <Button
                     type="submit"
-                    variant="outline" 
-                    size="sm" 
+                    variant="outline"
+                    size="sm"
                     className="h-9 gap-1.5 border-border hover:bg-muted text-xs"
                   >
                     <LogOut className="h-3.5 w-3.5" />
@@ -141,7 +141,7 @@ export default async function Home() {
               <Button asChild size="sm" className="h-9 gap-1.5 bg-brand-primary text-white hover:bg-brand-primary/95 text-xs font-semibold">
                 <Link href="/login">
                   <LogIn className="h-3.5 w-3.5" />
-                  Acceso Recepción
+                  Iniciar Sesión
                 </Link>
               </Button>
             )}
@@ -165,7 +165,7 @@ export default async function Home() {
             </h1>
 
             <p className="text-body-lg text-muted-foreground max-w-2xl mx-auto mb-10">
-              GESBOX te ayuda a gestionar ingresos en tiempo real, erradicar la suplantación de clientes morosos y registrar flujos de caja con total transparencia.
+              GESBOX te ayuda a gestionar ingresos en tiempo real, supervisar la actividad de los clientes y registrar flujos de caja.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -178,9 +178,6 @@ export default async function Home() {
                   <Link href="/login">Ingresar al Sistema</Link>
                 </Button>
               )}
-              <Button variant="outline" size="lg" className="w-full sm:w-auto h-12 px-8 border-border hover:bg-muted text-sm font-semibold rounded-lg">
-                Ver Demostración
-              </Button>
             </div>
           </div>
 
@@ -197,7 +194,7 @@ export default async function Home() {
                 Diseñado para la operación del día a día
               </h2>
               <p className="text-body-md text-muted-foreground mt-4">
-                La herramienta perfecta para recepcionistas y dueños de gimnasios que buscan agilidad en mostrador.
+                La herramienta perfecta para recepcionistas y dueños de gimnasios que buscan agilidad y automatización de procesos.
               </p>
             </div>
 
@@ -247,7 +244,7 @@ export default async function Home() {
                 Tarifas y Membresías
               </div>
               <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-                Planes simples, sin sorpresas
+                Planes simples
               </h2>
               <p className="text-body-md text-muted-foreground mt-4">
                 Adquiere o renueva tu membresía directamente en la recepción del gimnasio. Aceptamos efectivo y transferencias.
@@ -256,7 +253,7 @@ export default async function Home() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto">
               {formattedPlanes.map((plan: any) => {
-                const whatsappUrl = `https://wa.me/573000000000?text=${encodeURIComponent(
+                const whatsappUrl = `https://wa.me/573222839757?text=${encodeURIComponent(
                   `Hola! Estoy interesado en adquirir el plan "${plan.nombre}" por ${formatCOP(plan.precio)} en el gimnasio.`
                 )}`
 
@@ -318,7 +315,7 @@ export default async function Home() {
                           href="/login"
                           className="text-[10px] font-semibold text-muted-foreground hover:text-brand-primary transition-colors underline underline-offset-2"
                         >
-                          O iniciar trámite en recepción
+                          O iniciar gestión en recepción
                         </Link>
                       </div>
                     </div>
@@ -356,7 +353,7 @@ export default async function Home() {
                     </div>
                     <div>
                       <h4 className="font-bold text-sm text-foreground">Entrenadores Expertos</h4>
-                      <p className="text-xs text-muted-foreground">Asesoría profesional en sala de musculación.</p>
+                      <p className="text-xs text-muted-foreground">Asesoría profesional en zona de musculación.</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">

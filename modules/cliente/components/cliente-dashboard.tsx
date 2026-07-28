@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { CheckCircle2, XCircle, Clock, Shield, LogOut, Check, ArrowRight } from 'lucide-react'
-import { cancelarMembresiaAction, adquirirPlanAction } from '../actions'
+import { cancelarMembresiaAction } from '../actions'
 import Link from 'next/link'
 
 export function ClienteDashboard({ initialData }: { initialData: any }) {
@@ -44,19 +44,30 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
   }
 
   const handleAdquirir = async (planId: string) => {
-    if (!window.confirm('¿Deseas adquirir este plan ahora mismo?')) return
-    
     setErrorMsg('')
     setSuccessMsg('')
     setLoadingAction(true)
-    const res = await adquirirPlanAction(planId)
-    setLoadingAction(false)
-
-    if (res.success) {
-      setSuccessMsg('Plan adquirido correctamente. Refresca la página o contacta recepción si no se actualiza tu estado.')
-      window.location.reload()
-    } else {
-      setErrorMsg(res.error || 'Error al adquirir el plan.')
+    
+    try {
+      const response = await fetch('/api/checkout/mercadopago', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ planId })
+      })
+      
+      const data = await response.json()
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Error al inicializar el pago')
+      }
+      
+      if (data.init_point) {
+        // Redirigir a MercadoPago
+        window.location.href = data.init_point
+      }
+    } catch (err: any) {
+      setErrorMsg(err.message || 'Error de conexión con pasarela de pagos.')
+      setLoadingAction(false)
     }
   }
 
