@@ -28,20 +28,20 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
     setErrorMsg('')
     setSuccessMsg('')
     setLoadingAction(true)
-    
+
     try {
       const response = await fetch('/api/checkout/mercadopago', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ planId })
       })
-      
+
       const data = await response.json()
-      
+
       if (!response.ok) {
         throw new Error(data.error || 'Error al inicializar el pago')
       }
-      
+
       if (data.init_point) {
         // Redirigir a MercadoPago
         window.location.href = data.init_point
@@ -66,8 +66,8 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
-          <Button 
-            variant="outline" 
+          <Button
+            variant="outline"
             className="bg-white/10 text-white border-white/20 hover:bg-white/20"
             onClick={async () => {
               await fetch('/auth/signout', { method: 'POST' })
@@ -96,7 +96,7 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
         {/* Mi Membresía Actual */}
         <div className="lg:col-span-1 space-y-6">
           <h3 className="font-heading text-xl font-bold text-foreground">Mi Membresía</h3>
-          
+
           {membresiaActiva ? (
             <Card className="border-green-500 shadow-sm relative overflow-hidden">
               <div className="absolute top-0 right-0 p-3 bg-green-500 text-white rounded-bl-xl font-bold text-xs uppercase flex items-center gap-1">
@@ -132,27 +132,27 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
 
           {/* Historial básico */}
           {membresias.length > 0 && !membresiaActiva && (
-             <div className="mt-6">
-               <h4 className="font-semibold text-sm mb-3">Historial</h4>
-               <div className="space-y-2">
-                 {membresias.slice(0, 3).map((m: any) => (
-                   <div key={m.id} className="p-3 rounded-lg border border-border bg-card flex justify-between items-center text-xs">
-                     <div>
-                       <p className="font-bold">{m.planes?.nombre}</p>
-                       <p className="text-muted-foreground">Venció el {new Date(m.fecha_fin).toLocaleDateString('es-CO')}</p>
-                     </div>
-                     <span className="px-2 py-1 bg-muted rounded text-[10px] uppercase font-bold text-muted-foreground">{m.estado}</span>
-                   </div>
-                 ))}
-               </div>
-             </div>
+            <div className="mt-6">
+              <h4 className="font-semibold text-sm mb-3">Historial</h4>
+              <div className="space-y-2">
+                {membresias.slice(0, 3).map((m: any) => (
+                  <div key={m.id} className="p-3 rounded-lg border border-border bg-card flex justify-between items-center text-xs">
+                    <div>
+                      <p className="font-bold">{m.planes?.nombre}</p>
+                      <p className="text-muted-foreground">Venció el {new Date(m.fecha_fin).toLocaleDateString('es-CO')}</p>
+                    </div>
+                    <span className="px-2 py-1 bg-muted rounded text-[10px] uppercase font-bold text-muted-foreground">{m.estado}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </div>
 
         {/* Planes Disponibles */}
         <div className="lg:col-span-2 space-y-6">
           <h3 className="font-heading text-xl font-bold text-foreground">Planes Disponibles</h3>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {planes.map((plan: any) => {
               const features = [
@@ -180,7 +180,7 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
                       ))}
                     </ul>
 
-                    <Button 
+                    <Button
                       className="w-full mt-4 group"
                       disabled={loadingAction || !!membresiaActiva}
                       onClick={() => handleAdquirir(plan.id)}

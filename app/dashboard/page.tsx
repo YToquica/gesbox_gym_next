@@ -74,7 +74,7 @@ export default async function DashboardPage() {
 
       {/* Grid de Tarjetas Estadísticas (Kpis) */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="border-l-4 border-l-brand-primary hover:shadow-ambient transition-all duration-300">
+        <Card className="hover:shadow-ambient transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Clientes Registrados</CardTitle>
             <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
@@ -87,7 +87,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-green-500 hover:shadow-ambient transition-all duration-300">
+        <Card className="hover:shadow-ambient transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Membresías Activas</CardTitle>
             <div className="p-2 rounded-lg bg-green-500/10 text-green-600">
@@ -100,7 +100,7 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
 
-        <Card className="border-l-4 border-l-purple-500 hover:shadow-ambient transition-all duration-300">
+        <Card className="hover:shadow-ambient transition-all duration-300">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Planes Creados</CardTitle>
             <div className="p-2 rounded-lg bg-purple-500/10 text-purple-600">
