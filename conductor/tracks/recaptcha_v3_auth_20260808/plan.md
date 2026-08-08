@@ -26,10 +26,10 @@ Integración en cliente para cargar el script de Google y ejecutar la generació
 - [x] Task: Crear componente de Script o Hook `useRecaptcha` (8d1be45)
     - [x] Crear `modules/auth/hooks/use-recaptcha.ts` para cargar el script de Google reCAPTCHA v3 de forma asíncrona y segura
     - [x] Implementar función helper `executeRecaptcha(action: string): Promise<string | null>`
-- [ ] Task: Conectar `useRecaptcha` con `useLogin` y `useRegister`
-    - [ ] Modificar `useLogin` para solicitar el token con `action: 'login'` antes de enviar los datos a `loginAction`
-    - [ ] Modificar `useRegister` para solicitar el token con `action: 'register'` antes de enviar los datos a `registerAction`
-    - [ ] Gestionar estados de carga e informar posibles errores al usuario
+- [x] Task: Conectar `useRecaptcha` con `useLogin` y `useRegister` (26eb90d)
+    - [x] Modificar `useLogin` para solicitar el token con `action: 'login'` antes de enviar los datos a `loginAction`
+    - [x] Modificar `useRegister` para solicitar el token con `action: 'register'` antes de enviar los datos a `registerAction`
+    - [x] Gestionar estados de carga e informar posibles errores al usuario
 - [ ] Task: Actualizar formulario `LoginForm` y vista de autenticación
     - [ ] Asegurar la carga adecuada del script en `/login`
     - [ ] Mantener feedback de estados de carga en los botones de envío
