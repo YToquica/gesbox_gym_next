@@ -39,8 +39,8 @@ Integración en cliente para cargar el script de Google y ejecutar la generació
 
 Verificación integral del flujo de login y registro con reCAPTCHA v3.
 
-- [ ] Task: Verificación de compilación, tipos y pruebas manuales
-    - [ ] Ejecutar comprobación de TypeScript y linting (`npm run lint` / `npx tsc --noEmit`)
-    - [ ] Validar envío con token y respuesta del servidor
-    - [ ] Validar experiencia visual y responsividad
+- [x] Task: Verificación de compilación, tipos y pruebas manuales (2c0ec42)
+    - [x] Ejecutar comprobación de TypeScript y linting (`npm run lint` / `npx tsc --noEmit`)
+    - [x] Validar envío con token y respuesta del servidor
+    - [x] Validar experiencia visual y responsividad
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
