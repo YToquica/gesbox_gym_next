@@ -9,6 +9,7 @@ export const loginSchema = z.object({
     .string()
     .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' })
     .min(1, { message: 'La contraseña es requerida' }),
+  recaptchaToken: z.string().optional(),
 })
 
 export type LoginInput = z.infer<typeof loginSchema>
@@ -37,6 +38,7 @@ export const registerSchema = z.object({
   password: z
     .string()
     .min(6, { message: 'La contraseña debe tener al menos 6 caracteres' }),
+  recaptchaToken: z.string().optional(),
 })
 
 export type RegisterInput = z.infer<typeof registerSchema>
