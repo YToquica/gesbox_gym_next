@@ -23,9 +23,9 @@ Infraestructura de variables de entorno y utilidad de verificación del lado del
 
 Integración en cliente para cargar el script de Google y ejecutar la generación de tokens en el envío de formularios.
 
-- [ ] Task: Crear componente de Script o Hook `useRecaptcha`
-    - [ ] Crear `modules/auth/hooks/use-recaptcha.ts` para cargar el script de Google reCAPTCHA v3 de forma asíncrona y segura
-    - [ ] Implementar función helper `executeRecaptcha(action: string): Promise<string | null>`
+- [x] Task: Crear componente de Script o Hook `useRecaptcha` (8d1be45)
+    - [x] Crear `modules/auth/hooks/use-recaptcha.ts` para cargar el script de Google reCAPTCHA v3 de forma asíncrona y segura
+    - [x] Implementar función helper `executeRecaptcha(action: string): Promise<string | null>`
 - [ ] Task: Conectar `useRecaptcha` con `useLogin` y `useRegister`
     - [ ] Modificar `useLogin` para solicitar el token con `action: 'login'` antes de enviar los datos a `loginAction`
     - [ ] Modificar `useRegister` para solicitar el token con `action: 'register'` antes de enviar los datos a `registerAction`
