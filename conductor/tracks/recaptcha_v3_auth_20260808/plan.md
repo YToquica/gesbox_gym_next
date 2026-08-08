@@ -30,9 +30,9 @@ Integración en cliente para cargar el script de Google y ejecutar la generació
     - [x] Modificar `useLogin` para solicitar el token con `action: 'login'` antes de enviar los datos a `loginAction`
     - [x] Modificar `useRegister` para solicitar el token con `action: 'register'` antes de enviar los datos a `registerAction`
     - [x] Gestionar estados de carga e informar posibles errores al usuario
-- [ ] Task: Actualizar formulario `LoginForm` y vista de autenticación
-    - [ ] Asegurar la carga adecuada del script en `/login`
-    - [ ] Mantener feedback de estados de carga en los botones de envío
+- [x] Task: Actualizar formulario `LoginForm` y vista de autenticación (1e97c16)
+    - [x] Asegurar la carga adecuada del script en `/login`
+    - [x] Mantener feedback de estados de carga en los botones de envío
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Validación Final y Entrega
