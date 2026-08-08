@@ -19,7 +19,7 @@ Infraestructura de variables de entorno y utilidad de verificación del lado del
     - [x] Retornar mensaje de error amigable si la verificación de reCAPTCHA falla
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 2: Frontend y Hooks de reCAPTCHA v3
+## Phase 2: Frontend y Hooks de reCAPTCHA v3 [checkpoint: 1e97c16]
 
 Integración en cliente para cargar el script de Google y ejecutar la generación de tokens en el envío de formularios.
 
@@ -33,7 +33,7 @@ Integración en cliente para cargar el script de Google y ejecutar la generació
 - [x] Task: Actualizar formulario `LoginForm` y vista de autenticación (1e97c16)
     - [x] Asegurar la carga adecuada del script en `/login`
     - [x] Mantener feedback de estados de carga en los botones de envío
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 3: Validación Final y Entrega
 
