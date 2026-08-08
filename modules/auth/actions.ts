@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from './schemas'
+import { verifyRecaptchaToken } from '@/lib/recaptcha/verify'
 
 export async function loginAction(data: LoginInput) {
   // 1. Validar datos en el servidor
@@ -11,6 +12,15 @@ export async function loginAction(data: LoginInput) {
       success: false,
       error: 'Datos de inicio de sesión no válidos.',
       errors: validation.error.flatten().fieldErrors,
+    }
+  }
+
+  // 2. Verificar token de seguridad Google reCAPTCHA v3
+  const recaptcha = await verifyRecaptchaToken(validation.data.recaptchaToken, 'login')
+  if (!recaptcha.success) {
+    return {
+      success: false,
+      error: recaptcha.error || 'Error de validación de seguridad. Por favor, intenta nuevamente.',
     }
   }
 
@@ -73,6 +83,15 @@ export async function registerAction(data: RegisterInput) {
       success: false,
       error: 'Datos de registro no válidos.',
       errors: validation.error.flatten().fieldErrors,
+    }
+  }
+
+  // 2. Verificar token de seguridad Google reCAPTCHA v3
+  const recaptcha = await verifyRecaptchaToken(validation.data.recaptchaToken, 'register')
+  if (!recaptcha.success) {
+    return {
+      success: false,
+      error: recaptcha.error || 'Error de validación de seguridad. Por favor, intenta nuevamente.',
     }
   }
 
