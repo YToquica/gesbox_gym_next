@@ -2,7 +2,7 @@
 
 Integración de Google reCAPTCHA v3 en los flujos de autenticación de GesBox utilizando Next.js App Router y Server Actions.
 
-## Phase 1: Configuración del Entorno y Verificación en el Servidor
+## Phase 1: Configuración del Entorno y Verificación en el Servidor [checkpoint: 93f07ae]
 
 Infraestructura de variables de entorno y utilidad de verificación del lado del servidor para validar tokens con Google.
 
@@ -17,7 +17,7 @@ Infraestructura de variables de entorno y utilidad de verificación del lado del
     - [x] Llamar a `verifyRecaptchaToken` al inicio de `loginAction` con `action: 'login'`
     - [x] Llamar a `verifyRecaptchaToken` al inicio de `registerAction` con `action: 'register'`
     - [x] Retornar mensaje de error amigable si la verificación de reCAPTCHA falla
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Frontend y Hooks de reCAPTCHA v3
 
