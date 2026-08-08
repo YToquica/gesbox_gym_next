@@ -13,10 +13,10 @@ Infraestructura de variables de entorno y utilidad de verificación del lado del
     - [x] Crear `lib/recaptcha/verify.ts` que realice la petición `POST` a `https://www.google.com/recaptcha/api/siteverify`
     - [x] Validar `success === true`, `action` esperada y `score >= 0.5`
     - [x] Implementar bypass seguro en modo desarrollo con warning informativo si las variables no están configuradas
-- [ ] Task: Integrar verificación en `loginAction` y `registerAction`
-    - [ ] Llamar a `verifyRecaptchaToken` al inicio de `loginAction` con `action: 'login'`
-    - [ ] Llamar a `verifyRecaptchaToken` al inicio de `registerAction` con `action: 'register'`
-    - [ ] Retornar mensaje de error amigable si la verificación de reCAPTCHA falla
+- [x] Task: Integrar verificación en `loginAction` y `registerAction` (93f07ae)
+    - [x] Llamar a `verifyRecaptchaToken` al inicio de `loginAction` con `action: 'login'`
+    - [x] Llamar a `verifyRecaptchaToken` al inicio de `registerAction` con `action: 'register'`
+    - [x] Retornar mensaje de error amigable si la verificación de reCAPTCHA falla
 - [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
 ## Phase 2: Frontend y Hooks de reCAPTCHA v3
