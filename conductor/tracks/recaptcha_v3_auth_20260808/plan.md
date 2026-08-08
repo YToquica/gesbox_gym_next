@@ -6,9 +6,9 @@ Integración de Google reCAPTCHA v3 en los flujos de autenticación de GesBox ut
 
 Infraestructura de variables de entorno y utilidad de verificación del lado del servidor para validar tokens con Google.
 
-- [ ] Task: Configurar variables de entorno en `.env.example` y schemas de validación
-    - [ ] Documentar `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` y `RECAPTCHA_SECRET_KEY` en `.env.example`
-    - [ ] Actualizar schemas de `LoginInput` y `RegisterInput` en `modules/auth/schemas.ts` para aceptar `recaptchaToken` opcional
+- [x] Task: Configurar variables de entorno en `.env.example` y schemas de validación (5bdf8f7)
+    - [x] Documentar `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` y `RECAPTCHA_SECRET_KEY` en `.env.example`
+    - [x] Actualizar schemas de `LoginInput` y `RegisterInput` en `modules/auth/schemas.ts` para aceptar `recaptchaToken` opcional
 - [ ] Task: Crear servicio/utilidad de verificación del servidor `verifyRecaptchaToken`
     - [ ] Crear `lib/recaptcha/verify.ts` que realice la petición `POST` a `https://www.google.com/recaptcha/api/siteverify`
     - [ ] Validar `success === true`, `action` esperada y `score >= 0.5`
