@@ -1,9 +1,12 @@
+'use client'
+
 import { useState, useTransition } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { registerSchema, type RegisterInput } from '../schemas'
 import { registerAction, loginAction } from '../actions'
 import { useRouter } from 'next/navigation'
+import { useRecaptcha } from './use-recaptcha'
 
 interface UseRegisterProps {
   onSuccess: () => void
@@ -14,9 +17,10 @@ export function useRegister({ onSuccess }: UseRegisterProps) {
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
   const [isSuccess, setIsSuccess] = useState(false)
+  const { executeRecaptcha } = useRecaptcha()
 
   const form = useForm<RegisterInput>({
-    resolver: zodResolver(registerSchema as any),
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       nombre_completo: '',
       tipo_documento: 'CC',
@@ -32,7 +36,13 @@ export function useRegister({ onSuccess }: UseRegisterProps) {
     setIsSuccess(false)
     
     startTransition(async () => {
-      const result = await registerAction(data)
+      // 1. Obtener token de seguridad Google reCAPTCHA v3 con acción 'register'
+      const recaptchaToken = await executeRecaptcha('register')
+
+      const result = await registerAction({
+        ...data,
+        recaptchaToken: recaptchaToken || undefined,
+      })
 
       if (!result.success) {
         setError(result.error || 'Ocurrió un error al crear la cuenta.')
@@ -51,10 +61,12 @@ export function useRegister({ onSuccess }: UseRegisterProps) {
 
       setIsSuccess(true)
       
-      // Intentar iniciar sesión automáticamente tras el registro
+      // 2. Intentar iniciar sesión automáticamente tras el registro
+      const loginRecaptchaToken = await executeRecaptcha('login')
       const loginResult = await loginAction({
         email: data.email,
         password: data.password,
+        recaptchaToken: loginRecaptchaToken || undefined,
       })
 
       if (loginResult.success) {
