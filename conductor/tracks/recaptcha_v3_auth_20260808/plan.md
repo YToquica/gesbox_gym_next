@@ -9,10 +9,10 @@ Infraestructura de variables de entorno y utilidad de verificación del lado del
 - [x] Task: Configurar variables de entorno en `.env.example` y schemas de validación (5bdf8f7)
     - [x] Documentar `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` y `RECAPTCHA_SECRET_KEY` en `.env.example`
     - [x] Actualizar schemas de `LoginInput` y `RegisterInput` en `modules/auth/schemas.ts` para aceptar `recaptchaToken` opcional
-- [ ] Task: Crear servicio/utilidad de verificación del servidor `verifyRecaptchaToken`
-    - [ ] Crear `lib/recaptcha/verify.ts` que realice la petición `POST` a `https://www.google.com/recaptcha/api/siteverify`
-    - [ ] Validar `success === true`, `action` esperada y `score >= 0.5`
-    - [ ] Implementar bypass seguro en modo desarrollo con warning informativo si las variables no están configuradas
+- [x] Task: Crear servicio/utilidad de verificación del servidor `verifyRecaptchaToken` (bae15f9)
+    - [x] Crear `lib/recaptcha/verify.ts` que realice la petición `POST` a `https://www.google.com/recaptcha/api/siteverify`
+    - [x] Validar `success === true`, `action` esperada y `score >= 0.5`
+    - [x] Implementar bypass seguro en modo desarrollo con warning informativo si las variables no están configuradas
 - [ ] Task: Integrar verificación en `loginAction` y `registerAction`
     - [ ] Llamar a `verifyRecaptchaToken` al inicio de `loginAction` con `action: 'login'`
     - [ ] Llamar a `verifyRecaptchaToken` al inicio de `registerAction` con `action: 'register'`
