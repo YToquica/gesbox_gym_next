@@ -35,7 +35,7 @@ Integración en cliente para cargar el script de Google y ejecutar la generació
     - [x] Mantener feedback de estados de carga en los botones de envío
 - [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
 
-## Phase 3: Validación Final y Entrega
+## Phase 3: Validación Final y Entrega [checkpoint: 2c0ec42]
 
 Verificación integral del flujo de login y registro con reCAPTCHA v3.
 
@@ -43,4 +43,4 @@ Verificación integral del flujo de login y registro con reCAPTCHA v3.
     - [x] Ejecutar comprobación de TypeScript y linting (`npm run lint` / `npx tsc --noEmit`)
     - [x] Validar envío con token y respuesta del servidor
     - [x] Validar experiencia visual y responsividad
-- [ ] Task: Phase Verification & Checkpoint (Refer to workflow.md)
+- [x] Task: Phase Verification & Checkpoint (Refer to workflow.md)
