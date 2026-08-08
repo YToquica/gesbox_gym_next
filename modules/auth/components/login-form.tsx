@@ -218,6 +218,17 @@ export function LoginForm() {
                       'Ingresar al Sistema'
                     )}
                   </Button>
+
+                  <p className="text-[10px] text-center text-muted-foreground/70 mt-2">
+                    Protegido por Google reCAPTCHA v3.{' '}
+                    <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                      Privacidad
+                    </a>{' '}
+                    y{' '}
+                    <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                      Términos
+                    </a>.
+                  </p>
                 </form>
               </div>
             ) : (
@@ -429,6 +440,17 @@ export function LoginForm() {
                         'Registrar e Iniciar Sesión'
                       )}
                     </Button>
+
+                    <p className="text-[10px] text-center text-muted-foreground/70 mt-2">
+                      Protegido por Google reCAPTCHA v3.{' '}
+                      <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                        Privacidad
+                      </a>{' '}
+                      y{' '}
+                      <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                        Términos
+                      </a>.
+                    </p>
                   </form>
                 )}
               </div>
