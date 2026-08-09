@@ -3,7 +3,7 @@
 import * as React from 'react'
 import { Dumbbell, Eye, EyeOff, Loader2, Lock, Mail, AlertCircle, User, CheckCircle, Smartphone } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
+import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useLogin } from '../hooks/use-login'

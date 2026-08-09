@@ -9,10 +9,10 @@ import { useRouter } from 'next/navigation'
 import { useRecaptcha } from './use-recaptcha'
 
 interface UseRegisterProps {
-  onSuccess: () => void
+  onSuccess?: () => void
 }
 
-export function useRegister({ onSuccess }: UseRegisterProps) {
+export function useRegister({ onSuccess }: UseRegisterProps = {}) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
@@ -70,12 +70,10 @@ export function useRegister({ onSuccess }: UseRegisterProps) {
       })
 
       if (loginResult.success) {
+        onSuccess?.()
         router.push('/')
         router.refresh()
       }
-      // Si requiere confirmación de email o no se pudo iniciar sesión de inmediato,
-      // no llamamos a onSuccess() para que el usuario pueda ver la pantalla de éxito.
-      // El usuario puede cambiar a la pestaña de login manualmente con el botón.
     })
   }
 

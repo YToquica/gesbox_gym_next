@@ -67,7 +67,7 @@ export async function loginAction(data: LoginInput) {
       success: true,
       rol,
     }
-  } catch (err) {
+  } catch {
     return {
       success: false,
       error: 'Ha ocurrido un error inesperado de red o servidor.',
@@ -170,10 +170,11 @@ export async function registerAction(data: RegisterInput) {
     return {
       success: true,
     }
-  } catch (err: any) {
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err)
     return {
       success: false,
-      error: 'Ha ocurrido un error inesperado de red o servidor: ' + (err.message || err),
+      error: 'Ha ocurrido un error inesperado de red o servidor: ' + message,
     }
   }
 }
