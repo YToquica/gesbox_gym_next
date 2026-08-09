@@ -21,6 +21,9 @@
 - **Database & Auth:** Supabase (PostgreSQL, Supabase Auth)
 - **Client/Server SDKs:** @supabase/supabase-js, @supabase/ssr
 
+## Security & Anti-Abuse
+- **Bot Protection:** Google reCAPTCHA v3 (Verificación invisible en Server Actions de autenticación)
+
 ## State Management & API
 - **Server State:** TanStack React Query v5
 - **Payments Integration:** Mercado Pago SDK
