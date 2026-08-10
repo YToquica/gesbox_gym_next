@@ -1,7 +1,8 @@
 'use client'
 
 import * as React from 'react'
-import { Dumbbell, Eye, EyeOff, Loader2, Lock, Mail, AlertCircle, User, CheckCircle, Smartphone } from 'lucide-react'
+import Link from 'next/link'
+import { Dumbbell, Eye, EyeOff, Loader2, Lock, Mail, AlertCircle, User, CheckCircle, Smartphone, ArrowLeft } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -49,14 +50,14 @@ export function LoginForm() {
         
         {/* Panel izquierdo decorativo (Oculto en móvil) */}
         <div className="relative hidden md:flex flex-col justify-between p-10 bg-gradient-to-br from-zinc-950 via-zinc-900 to-brand-primary-container text-white">
-          <div className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2 w-fit hover:opacity-90 transition-opacity">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-primary text-white shadow-md">
               <Dumbbell className="h-6 w-6" />
             </div>
             <span className="font-heading text-2xl font-black tracking-tight text-white">
               GES<span className="text-brand-primary">BOX</span>
             </span>
-          </div>
+          </Link>
 
           <div className="space-y-4">
             <h2 className="font-heading text-3xl font-extrabold leading-tight">
@@ -79,14 +80,27 @@ export function LoginForm() {
         {/* Panel derecho: Formulario */}
         <div className="flex flex-col justify-between p-6 sm:p-8 md:p-10">
           <div>
+            {/* Botón Volver al inicio */}
+            <div className="flex items-center justify-between mb-4">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors group"
+              >
+                <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                <span>Volver al inicio</span>
+              </Link>
+            </div>
+
             {/* Logo para móviles */}
             <div className="flex items-center gap-2 md:hidden mb-6">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-primary text-white">
-                <Dumbbell className="h-5 w-5" />
-              </div>
-              <span className="font-heading text-xl font-black tracking-tight">
-                GES<span className="text-brand-primary">BOX</span>
-              </span>
+              <Link href="/" className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-primary text-white">
+                  <Dumbbell className="h-5 w-5" />
+                </div>
+                <span className="font-heading text-xl font-black tracking-tight">
+                  GES<span className="text-brand-primary">BOX</span>
+                </span>
+              </Link>
             </div>
 
             {/* Selector de Modo (Tabs) */}

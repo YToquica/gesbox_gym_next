@@ -50,3 +50,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# conductor & agent configuration
+.agents/
+conductor/
+

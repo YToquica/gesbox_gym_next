@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { getPlanesAction } from '@/modules/planes/actions'
 import { cn } from '@/lib/utils'
 import { ForceLightMode } from '@/components/shared/theme-forcer'
+import { LandingNav } from '@/components/shared/landing-nav'
 
 export default async function Home() {
   const supabase = await createClient()
@@ -100,20 +101,16 @@ export default async function Home() {
       {/* Navbar principal */}
       <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-md">
         <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-6">
-          <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-primary text-white">
               <Dumbbell className="h-5 w-5" />
             </div>
             <span className="font-heading text-xl font-black tracking-tight">
               GES<span className="text-brand-primary">BOX</span>
             </span>
-          </div>
+          </a>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
-            <a href="#features" className="hover:text-foreground transition-colors">Características</a>
-            <a href="#pricing" className="hover:text-foreground transition-colors">Planes</a>
-            <a href="#about" className="hover:text-foreground transition-colors">Nosotros</a>
-          </nav>
+          <LandingNav />
 
           <div className="flex items-center gap-3">
             {profile ? (
@@ -187,7 +184,7 @@ export default async function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 bg-background">
+        <section id="features" className="py-20 bg-background scroll-mt-16">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -236,7 +233,7 @@ export default async function Home() {
         </section>
 
         {/* Planes Section */}
-        <section id="pricing" className="py-20 bg-surface-container-lowest border-t border-border/50">
+        <section id="pricing" className="py-20 bg-surface-container-lowest border-t border-border/50 scroll-mt-16">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-semibold mb-4">
@@ -327,7 +324,7 @@ export default async function Home() {
         </section>
 
         {/* Nosotros Section */}
-        <section id="about" className="py-20 bg-surface-container-low border-t border-border/50">
+        <section id="about" className="py-20 bg-surface-container-low border-t border-border/50 scroll-mt-16">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
               {/* Información y Propuesta */}
@@ -499,10 +496,10 @@ export default async function Home() {
       {/* Footer */}
       <footer className="border-t border-border bg-surface-container-low py-8">
         <div className="container mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer">
             <Dumbbell className="h-4 w-4 text-brand-primary" />
             <span className="font-bold">GESBOX Gym Manager</span>
-          </div>
+          </a>
           <p>&copy; {new Date().getFullYear()} GESBOX. Todos los derechos reservados.</p>
         </div>
       </footer>
