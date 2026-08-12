@@ -53,5 +53,5 @@ node_modules/
 
 # conductor & agent configuration
 .agents/
-conductor/
+.conductor/
 

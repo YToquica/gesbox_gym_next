@@ -74,11 +74,26 @@ export async function verifyRecaptchaToken(
     const data: RecaptchaVerifyResponse = await res.json()
 
     if (!data.success) {
-      const errorCodes = data['error-codes']?.join(', ') || 'Desconocido'
-      console.error(`[reCAPTCHA] Verificación fallida de Google. Códigos: ${errorCodes}`)
+      const codes = data['error-codes'] || []
+      const errorCodesStr = codes.join(', ') || 'Desconocido'
+      console.error(`[reCAPTCHA] Verificación fallida de Google. Códigos: ${errorCodesStr}`)
+
+      let detailedMsg = 'Verificación de seguridad fallida. Intenta nuevamente.'
+      if (codes.includes('invalid-keys')) {
+        detailedMsg = 'Las claves de reCAPTCHA no coinciden entre sí o no pertenecen al mismo par en Google.'
+      } else if (codes.includes('invalid-input-secret')) {
+        detailedMsg = 'La clave secreta (RECAPTCHA_SECRET_KEY) es inválida para Google.'
+      } else if (codes.includes('invalid-input-response')) {
+        detailedMsg = 'El token reCAPTCHA generado por el cliente no corresponde a la clave secreta o expiró.'
+      } else if (codes.includes('timeout-or-duplicate')) {
+        detailedMsg = 'El token de seguridad ha expirado o ya fue utilizado. Intenta de nuevo.'
+      } else if (codes.includes('bad-request')) {
+        detailedMsg = 'Petición de validación a Google mal formada.'
+      }
+
       return {
         success: false,
-        error: 'Verificación de seguridad fallida. Intenta nuevamente.',
+        error: detailedMsg,
       }
     }
 

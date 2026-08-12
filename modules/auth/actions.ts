@@ -99,48 +99,8 @@ export async function registerAction(data: RegisterInput) {
   const supabase = await createClient()
 
   try {
-    // 2. Verificar si el número de documento ya está registrado en la base de datos (vía RPC para evitar problemas de RLS en anónimo)
-    const { data: documentExists, error: checkError } = await supabase
-      .rpc('check_document_exists', { doc_num: numero_documento })
-
-    if (checkError) {
-      return {
-        success: false,
-        error: 'Error al verificar el número de documento en la base de datos.',
-      }
-    }
-
-    if (documentExists) {
-      return {
-        success: false,
-        errors: {
-          numero_documento: ['Este número de documento ya está registrado en el gimnasio.'],
-        },
-      }
-    }
-
-    // 2.5 Verificar si el correo electrónico ya está registrado en la base de datos (vía RPC)
-    const { data: emailExists, error: emailCheckError } = await supabase
-      .rpc('check_email_exists', { email_to_check: email })
-
-    if (emailCheckError) {
-      return {
-        success: false,
-        error: 'Error al verificar el correo electrónico en la base de datos.',
-      }
-    }
-
-    if (emailExists) {
-      return {
-        success: false,
-        errors: {
-          email: ['Este correo electrónico ya está registrado.'],
-        },
-      }
-    }
-
-    // 3. Registrar al usuario en Supabase Auth
-    const { error: signUpError } = await supabase.auth.signUp({
+    // 2. Registrar al usuario en Supabase Auth
+    const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
       email,
       password,
       options: {
@@ -155,15 +115,47 @@ export async function registerAction(data: RegisterInput) {
     })
 
     if (signUpError) {
-      let errorMessage = signUpError.message || 'Error al crear la cuenta en el servidor de autenticación.'
+      const errorMsg = signUpError.message.toLowerCase()
       
-      if (signUpError.message.toLowerCase().includes('rate limit')) {
-        errorMessage = 'Límite de solicitudes de correo excedido. Para solucionar esto en desarrollo, desactiva la opción "Confirm email" en tu panel de Supabase (Authentication -> Providers -> Email).'
+      // Control de errores de duplicados y límites de Supabase Auth
+      if (errorMsg.includes('already registered') || errorMsg.includes('user already exists')) {
+        return {
+          success: false,
+          errors: {
+            email: ['Este correo electrónico ya está registrado en el sistema.'],
+          },
+        }
+      }
+
+      if (errorMsg.includes('profiles_numero_documento_key') || errorMsg.includes('duplicate key') || errorMsg.includes('database error')) {
+        return {
+          success: false,
+          errors: {
+            numero_documento: ['Este número de documento ya se encuentra registrado en el gimnasio.'],
+          },
+        }
+      }
+
+      if (errorMsg.includes('rate limit')) {
+        return {
+          success: false,
+          error: 'Demasiados intentos seguidos. Por favor, espera un momento antes de volver a intentar.',
+        }
       }
 
       return {
         success: false,
-        error: errorMessage,
+        error: signUpError.message || 'Error al crear la cuenta en el servidor de autenticación.',
+      }
+    }
+
+    // Comprobación de seguridad: si Supabase retorna identidades vacías indica correo ya registrado
+    if (signUpData?.user && signUpData.user.identities && signUpData.user.identities.length === 0) {
+      return {
+        success: false,
+        errors: {
+          email: ['Este correo electrónico ya está registrado en el sistema.'],
+        },
       }
     }
 

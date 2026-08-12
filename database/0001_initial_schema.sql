@@ -85,8 +85,11 @@ CREATE OR REPLACE TRIGGER on_auth_user_created
     AFTER INSERT ON auth.users
     FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
+-- Revocar ejecución pública del trigger de perfiles
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC, anon, authenticated;
+
 -- ========================================================
--- 4. SEGURIDAD: ROW LEVEL SECURITY (RLS)
+-- 4. SEGURIDAD: ROW LEVEL SECURITY (RLS) Y ESQUEMA PRIVADO
 -- ========================================================
 -- Activamos la seguridad por filas en todas las tablas
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
@@ -95,8 +98,11 @@ ALTER TABLE public.membresias ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.pagos ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.asistencias ENABLE ROW LEVEL SECURITY;
 
+-- Esquema privado para funciones de seguridad internas (no expuestas por la API PostgREST)
+CREATE SCHEMA IF NOT EXISTS private;
+
 -- Funciones auxiliares para RLS no recursivo
-CREATE OR REPLACE FUNCTION public.es_admin(user_id UUID)
+CREATE OR REPLACE FUNCTION private.es_admin(user_id UUID)
 RETURNS BOOLEAN AS $$
 BEGIN
     RETURN EXISTS (
@@ -106,7 +112,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
 
-CREATE OR REPLACE FUNCTION public.es_empleado(user_id UUID)
+CREATE OR REPLACE FUNCTION private.es_empleado(user_id UUID)
 RETURNS BOOLEAN AS $$
 BEGIN
     RETURN EXISTS (
@@ -115,25 +121,6 @@ BEGIN
     );
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
-
--- Funciones de validación para registro
-CREATE OR REPLACE FUNCTION public.check_document_exists(doc_num TEXT)
-RETURNS BOOLEAN AS $$
-BEGIN
-    RETURN EXISTS (
-        SELECT 1 FROM public.profiles WHERE numero_documento = doc_num
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = public;
-
-CREATE OR REPLACE FUNCTION public.check_email_exists(email_to_check TEXT)
-RETURNS BOOLEAN AS $$
-BEGIN
-    RETURN EXISTS (
-        SELECT 1 FROM auth.users WHERE email = email_to_check
-    );
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER SET search_path = auth, public;
 
 -- 4.1 Políticas para 'Profiles'
 CREATE POLICY "Permitir lectura pública de perfiles a empleados" 
@@ -146,11 +133,11 @@ CREATE POLICY "Usuarios pueden actualizar su propio perfil"
 
 CREATE POLICY "Admins y recepcionistas pueden actualizar perfiles de otros"
     ON public.profiles FOR UPDATE
-    USING (public.es_empleado(auth.uid()));
+    USING (private.es_empleado(auth.uid()));
 
 CREATE POLICY "Admins pueden hacer todo en perfiles" 
     ON public.profiles FOR ALL 
-    USING (public.es_admin(auth.uid()));
+    USING (private.es_admin(auth.uid()));
 
 -- 4.2 Políticas para 'Planes'
 CREATE POLICY "Cualquiera ve los planes" 
