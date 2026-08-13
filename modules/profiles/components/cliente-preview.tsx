@@ -1,15 +1,15 @@
 'use client'
 
 import { useState } from 'react'
-import { 
-  X, 
-  User, 
-  Calendar, 
-  Phone, 
-  CreditCard, 
-  Activity, 
-  CheckCircle2, 
-  XCircle, 
+import {
+  X,
+  User,
+  Calendar,
+  Phone,
+  CreditCard,
+  Activity,
+  CheckCircle2,
+  XCircle,
   AlertCircle,
   Clock,
   FileText
@@ -158,7 +158,8 @@ export function ClientePreview({ detalles, onClose, isLoading, error, userRole, 
                   }
                 }
               }}
-              className="h-7 text-xs px-2"
+              className="h-auto text-xs px-2"
+              style={{ paddingTop: '.5rem', paddingBottom: '.5rem' }}
             >
               {isDeleting ? 'Eliminando...' : 'Eliminar'}
             </Button>
@@ -171,7 +172,7 @@ export function ClientePreview({ detalles, onClose, isLoading, error, userRole, 
           </button>
         </div>
 
-        <div className="flex items-center gap-4 pt-2">
+        <div className="flex items-center gap-4 pt-6.5">
           <div className="h-14 w-14 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold text-lg border-2 border-brand-primary/20 shrink-0">
             {profile.nombre_completo.charAt(0).toUpperCase()}
           </div>
@@ -188,7 +189,7 @@ export function ClientePreview({ detalles, onClose, isLoading, error, userRole, 
 
       {/* Cuerpo Desplazable */}
       <div className="flex-1 overflow-y-auto p-5 space-y-6">
-        
+
         {/* Datos de Contacto */}
         <div className="grid grid-cols-2 gap-4 text-xs">
           <div className="space-y-1">
@@ -248,7 +249,7 @@ export function ClientePreview({ detalles, onClose, isLoading, error, userRole, 
             <CreditCard className="h-3.5 w-3.5 text-brand-primary" />
             Historial de Pagos
           </h4>
-          
+
           {pagos && pagos.length > 0 ? (
             <div className="space-y-2 max-h-36 overflow-y-auto pr-1">
               {pagos.map((pago) => (

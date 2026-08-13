@@ -3,13 +3,13 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Background & Foreground base */
-  --background: #f8f9fa;
-  /* Concrete Light */
-  --foreground: #191c1d;
-  /* Obsidian Gray */
 
-  /* Custom brand colors from design.md */
+  --background: #f8f9fa;
+
+  --foreground: #191c1d;
+
+
+
   --surface: #f8f9fa;
   --surface-dim: #d9dadb;
   --surface-bright: #f8f9fa;
@@ -29,7 +29,7 @@
   --primary: #ff6b1a;
   --on-primary: #ffffff;
   --primary-container: #ff6b1a;
-  /* Electric Orange */
+
   --on-primary-container: #591e00;
   --inverse-primary: #ffb596;
 
@@ -65,7 +65,7 @@
 
   --surface-variant: #e1e3e4;
 
-  /* Shadcn standard theme variables mapping to design.md tokens */
+
   --card: var(--surface-container-lowest);
   --card-foreground: var(--on-surface);
 
@@ -88,10 +88,10 @@
   --destructive-foreground: var(--on-error);
 
   --border: #e2e8f0;
-  /* card border */
+
   --input: var(--outline-variant);
   --ring: var(--primary-container);
-  /* focus border primary orange */
+
 
   --radius-sm-val: 0.25rem;
   --radius-val: 0.5rem;
@@ -104,16 +104,16 @@
 
 .dark {
   --background: #0d0e10;
-  /* Deep Obsidian Black background */
+
   --foreground: #f8f9fa;
-  /* Concrete Light text */
+
 
   --surface: #121315;
   --surface-dim: #0d0e10;
   --surface-bright: #2d2f34;
   --surface-container-lowest: #090a0b;
   --surface-container-low: #121315;
-  /* content background: dark gray */
+
   --surface-container: #1b1d20;
   --surface-container-high: #24272c;
   --surface-container-highest: #2d3036;
@@ -124,7 +124,7 @@
   --surface-tint: #ff6b1a;
 
   --primary: #ff6b1a;
-  /* Keep vibrant Electric Orange in dark mode for contrast! */
+
   --on-primary: #ffffff;
   --primary-container: #ff6b1a;
   --on-primary-container: #591e00;
@@ -145,7 +145,6 @@
   --on-error-container: #ffdad6;
 
   --card: #181a1d;
-  /* Card is lighter than background */
   --card-foreground: var(--on-surface);
 
   --popover: #181a1d;
@@ -167,7 +166,7 @@
   --destructive-foreground: var(--on-error);
 
   --border: #22252a;
-  /* subtle dark border */
+
   --input: #22252a;
   --ring: var(--primary-container);
 
@@ -233,22 +232,17 @@
   --color-brand-error-container: var(--error-container);
   --color-brand-on-error-container: var(--on-error-container);
 
-  /* Fonts mapping */
   --font-lexend: var(--font-lexend);
   --font-inter: var(--font-inter);
   --font-sans: var(--font-inter);
   --font-heading: var(--font-lexend);
 
-
-
-  /* Radius mapping */
   --radius-sm: var(--radius-sm-val);
   --radius-md: var(--radius-md-val);
   --radius-lg: var(--radius-lg-val);
   --radius-xl: var(--radius-xl-val);
   --radius: var(--radius-val);
 
-  /* Shadow */
   --shadow-ambient: var(--shadow-ambient-val);
 }
 
@@ -311,8 +305,7 @@ body {
   color: var(--foreground);
 }
 
-/* Ensure all buttons have pointer cursor for better UX */
-button, 
+button,
 [role="button"],
 [type="button"],
 [type="submit"],
