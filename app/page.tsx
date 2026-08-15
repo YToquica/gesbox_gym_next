@@ -184,7 +184,7 @@ export default async function Home() {
         </section>
 
         {/* Features Section */}
-        <section id="features" className="py-20 bg-background scroll-mt-16">
+        <section id="features" className="py-20 bg-background scroll-mt-20 sm:scroll-mt-24">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <h2 className="font-heading text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
@@ -195,9 +195,9 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
               {/* Tarjeta 1 */}
-              <div className="p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 lg:p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary mb-6">
                   <User className="h-6 w-6" />
                 </div>
@@ -208,7 +208,7 @@ export default async function Home() {
               </div>
 
               {/* Tarjeta 2 */}
-              <div className="p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 lg:p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary mb-6">
                   <Wallet className="h-6 w-6" />
                 </div>
@@ -219,7 +219,7 @@ export default async function Home() {
               </div>
 
               {/* Tarjeta 3 */}
-              <div className="p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
+              <div className="p-6 lg:p-8 rounded-xl border border-border bg-card shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-brand-primary/10 text-brand-primary mb-6">
                   <CheckCircle className="h-6 w-6" />
                 </div>
@@ -233,7 +233,7 @@ export default async function Home() {
         </section>
 
         {/* Planes Section */}
-        <section id="pricing" className="py-20 bg-surface-container-lowest border-t border-border/50 scroll-mt-16">
+        <section id="pricing" className="py-20 bg-surface-container-lowest border-t border-border/50 scroll-mt-20 sm:scroll-mt-24">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="text-center max-w-2xl mx-auto mb-16">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-primary/10 text-brand-primary text-xs font-semibold mb-4">
@@ -248,7 +248,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch max-w-md md:max-w-lg lg:max-w-6xl mx-auto">
               {formattedPlanes.map((plan: any) => {
                 const whatsappUrl = `https://wa.me/573222839757?text=${encodeURIComponent(
                   `Hola! Estoy interesado en adquirir el plan "${plan.nombre}" por ${formatCOP(plan.precio)} en el gimnasio.`
@@ -258,14 +258,14 @@ export default async function Home() {
                   <div
                     key={plan.id}
                     className={cn(
-                      "flex flex-col justify-between p-8 rounded-2xl border bg-card transition-all relative",
+                      "flex flex-col justify-between p-6 sm:p-8 lg:p-6 xl:p-8 rounded-2xl border bg-card transition-all relative",
                       plan.popular
-                        ? "border-brand-primary shadow-md scale-100 md:scale-105 z-10"
+                        ? "border-brand-primary shadow-md scale-100 lg:scale-105 z-10"
                         : "border-border shadow-sm hover:shadow-md"
                     )}
                   >
                     {plan.popular && (
-                      <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] font-bold tracking-wider px-3 py-1 rounded-full uppercase shadow">
+                      <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-brand-primary text-white text-[10px] sm:text-xs font-bold tracking-wider px-3.5 py-1 rounded-full uppercase shadow-md whitespace-nowrap">
                         Más Popular
                       </span>
                     )}
@@ -276,16 +276,18 @@ export default async function Home() {
                         <p className="text-xs text-muted-foreground mt-1">Duración: {plan.duracion_dias} días</p>
                       </div>
 
-                      <div className="flex items-baseline gap-1.5">
-                        <span className="font-heading text-4xl font-black text-foreground">{formatCOP(plan.precio)}</span>
-                        <span className="text-xs text-muted-foreground font-medium">COP</span>
+                      <div className="flex flex-wrap items-baseline gap-1.5">
+                        <span className="font-heading text-3xl sm:text-4xl lg:text-3xl xl:text-4xl font-black text-foreground tracking-tight">
+                          {formatCOP(plan.precio)}
+                        </span>
+                        <span className="text-xs text-muted-foreground font-semibold">COP</span>
                       </div>
 
                       <ul className="space-y-3.5 text-sm text-muted-foreground border-t border-border/80 pt-6">
                         {plan.features.map((feature: string, idx: number) => (
                           <li key={idx} className="flex items-start gap-2.5">
                             <Check className="h-4 w-4 text-brand-primary shrink-0 mt-0.5" />
-                            <span>{feature}</span>
+                            <span className="leading-snug">{feature}</span>
                           </li>
                         ))}
                       </ul>
@@ -295,14 +297,14 @@ export default async function Home() {
                       <Button
                         asChild
                         className={cn(
-                          "w-full h-11 text-xs font-semibold rounded-lg transition-colors gap-1.5",
+                          "w-full h-11 sm:h-12 text-xs sm:text-sm font-semibold rounded-xl transition-colors gap-1.5",
                           plan.popular
                             ? "bg-brand-primary text-white hover:bg-brand-primary/90"
                             : "bg-secondary/10 hover:bg-secondary/20 text-foreground border border-border"
                         )}
                       >
                         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                          <Phone className="h-3.5 w-3.5" />
+                          <Phone className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                           Adquirir Plan
                         </a>
                       </Button>
@@ -310,7 +312,7 @@ export default async function Home() {
                       <div className="text-center">
                         <Link
                           href="/login"
-                          className="text-[10px] font-semibold text-muted-foreground hover:text-brand-primary transition-colors underline underline-offset-2"
+                          className="text-[11px] sm:text-xs font-semibold text-muted-foreground hover:text-brand-primary transition-colors underline underline-offset-2"
                         >
                           O iniciar gestión en recepción
                         </Link>
@@ -324,7 +326,7 @@ export default async function Home() {
         </section>
 
         {/* Nosotros Section */}
-        <section id="about" className="py-20 bg-surface-container-low border-t border-border/50 scroll-mt-16">
+        <section id="about" className="py-20 bg-surface-container-low border-t border-border/50 scroll-mt-20 sm:scroll-mt-24">
           <div className="container mx-auto px-4 sm:px-6">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
               {/* Información y Propuesta */}
