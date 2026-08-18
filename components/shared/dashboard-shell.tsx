@@ -14,8 +14,6 @@ import {
   User,
   Shield,
   LayoutDashboard,
-  Sun,
-  Moon,
   UserCheck
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -31,35 +29,16 @@ interface DashboardShellProps {
 export default function DashboardShell({ children, profile }: DashboardShellProps) {
   const pathname = usePathname()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  
-  // Estado para el tema claro/oscuro
-  const [theme, setTheme] = useState<'light' | 'dark'>('light')
 
-  // Cargar tema inicial desde localStorage o preferencia del sistema
+  // Asegurar siempre modo claro en el panel de control
   useEffect(() => {
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'light' || savedTheme === 'dark') {
-      setTheme(savedTheme)
-    } else {
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-      setTheme(prefersDark ? 'dark' : 'light')
-    }
-  }, [])
-
-  // Sincronizar clase .dark en el documentElement
-  useEffect(() => {
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    } else {
+    try {
       document.documentElement.classList.remove('dark')
       localStorage.setItem('theme', 'light')
+    } catch (e) {
+      console.error('Error enforcing light theme:', e)
     }
-  }, [theme])
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === 'light' ? 'dark' : 'light'))
-  }
+  }, [])
 
   const menuItems = [
     {
@@ -276,19 +255,6 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
           </div>
           
           <div className="flex items-center gap-4">
-            {/* Botón de Cambio de Tema */}
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-all duration-200"
-              title={theme === 'light' ? 'Cambiar a modo oscuro' : 'Cambiar a modo claro'}
-            >
-              {theme === 'light' ? (
-                <Moon className="h-4.5 w-4.5" />
-              ) : (
-                <Sun className="h-4.5 w-4.5" />
-              )}
-            </button>
-
             <div className="hidden sm:flex flex-col items-end text-xs">
               <span className="font-semibold text-foreground">{profile.nombre_completo}</span>
               <span className="text-[10px] uppercase font-bold tracking-wider text-brand-primary">
