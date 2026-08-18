@@ -1,7 +1,17 @@
 'use server'
 
+import { headers } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
-import { loginSchema, registerSchema, type LoginInput, type RegisterInput } from './schemas'
+import {
+  loginSchema,
+  registerSchema,
+  forgotPasswordSchema,
+  resetPasswordSchema,
+  type LoginInput,
+  type RegisterInput,
+  type ForgotPasswordInput,
+  type ResetPasswordInput,
+} from './schemas'
 import { verifyRecaptchaToken } from '@/lib/recaptcha/verify'
 
 export async function loginAction(data: LoginInput) {
@@ -183,4 +193,131 @@ export async function getRolAction(userId: string): Promise<{ rol: string }> {
     .eq('id', userId)
     .single()
   return { rol: profile?.rol ?? 'cliente' }
+}
+
+/**
+ * Solicita el restablecimiento de contraseña enviando un correo con enlace PKCE seguro.
+ */
+export async function forgotPasswordAction(data: ForgotPasswordInput) {
+  // 1. Validar datos
+  const validation = forgotPasswordSchema.safeParse(data)
+  if (!validation.success) {
+    return {
+      success: false,
+      error: 'Correo electrónico no válido.',
+      errors: validation.error.flatten().fieldErrors,
+    }
+  }
+
+  // 2. Verificar reCAPTCHA v3
+  const recaptcha = await verifyRecaptchaToken(validation.data.recaptchaToken, 'forgot_password')
+  if (!recaptcha.success) {
+    return {
+      success: false,
+      error: recaptcha.error || 'Error de validación de seguridad. Por favor, intenta nuevamente.',
+    }
+  }
+
+  const { email } = validation.data
+  const supabase = await createClient()
+
+  try {
+    const headersList = await headers()
+    const host = headersList.get('host')
+    const proto = headersList.get('x-forwarded-proto') || (process.env.NODE_ENV === 'production' ? 'https' : 'http')
+    const origin = host ? `${proto}://${host}` : (process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000')
+    const redirectTo = `${origin}/auth/callback?next=/actualizar-contrasena`
+
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo,
+    })
+
+    if (error) {
+      if (error.message.toLowerCase().includes('rate limit')) {
+        return {
+          success: false,
+          error: 'Demasiados intentos seguidos. Por favor, espera unos minutos antes de solicitar otro enlace.',
+        }
+      }
+      return {
+        success: false,
+        error: error.message || 'Error al procesar la solicitud de recuperación.',
+      }
+    }
+
+    return {
+      success: true,
+      message: 'Si el correo ingresado se encuentra registrado en GESBOX, recibirás un enlace en tu bandeja de entrada en unos instantes.',
+    }
+  } catch {
+    return {
+      success: false,
+      error: 'Ha ocurrido un error inesperado al procesar la solicitud.',
+    }
+  }
+}
+
+/**
+ * Actualiza la contraseña del usuario cuando este cuenta con una sesión de recuperación activa.
+ */
+export async function updatePasswordAction(data: ResetPasswordInput) {
+  // 1. Validar datos
+  const validation = resetPasswordSchema.safeParse(data)
+  if (!validation.success) {
+    return {
+      success: false,
+      error: 'Datos de contraseña no válidos.',
+      errors: validation.error.flatten().fieldErrors,
+    }
+  }
+
+  const { password } = validation.data
+  const supabase = await createClient()
+
+  try {
+    // 2. Verificar que exista un usuario en sesión
+    const { data: { user }, error: userError } = await supabase.auth.getUser()
+    if (userError || !user) {
+      return {
+        success: false,
+        error: 'Tu sesión de recuperación ha expirado o no es válida. Por favor, solicita un nuevo enlace.',
+      }
+    }
+
+    // 3. Actualizar la contraseña en Supabase Auth
+    const { error: updateError } = await supabase.auth.updateUser({
+      password,
+    })
+
+    if (updateError) {
+      let errorMsg = 'Error al actualizar la contraseña.'
+      if (updateError.message.toLowerCase().includes('same_password')) {
+        errorMsg = 'La nueva contraseña no puede ser igual a la anterior.'
+      } else if (updateError.message.toLowerCase().includes('rate limit')) {
+        errorMsg = 'Demasiados intentos. Espera unos momentos antes de volver a intentar.'
+      }
+      return {
+        success: false,
+        error: updateError.message || errorMsg,
+      }
+    }
+
+    // 4. Consultar rol del usuario para redirección
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('rol')
+      .eq('id', user.id)
+      .single()
+
+    return {
+      success: true,
+      rol: profile?.rol || 'cliente',
+      message: 'Tu contraseña ha sido actualizada con éxito.',
+    }
+  } catch {
+    return {
+      success: false,
+      error: 'Ha ocurrido un error inesperado de red o servidor.',
+    }
+  }
 }

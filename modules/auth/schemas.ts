@@ -43,3 +43,29 @@ export const registerSchema = z.object({
 
 export type RegisterInput = z.infer<typeof registerSchema>
 
+export const forgotPasswordSchema = z.object({
+  email: z
+    .string()
+    .min(1, { message: 'El correo electrónico es requerido' })
+    .email({ message: 'Debe ingresar un correo electrónico válido' }),
+  recaptchaToken: z.string().optional(),
+})
+
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>
+
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(6, { message: 'La nueva contraseña debe tener al menos 6 caracteres' }),
+    confirmPassword: z
+      .string()
+      .min(1, { message: 'Debe confirmar su nueva contraseña' }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Las contraseñas no coinciden',
+    path: ['confirmPassword'],
+  })
+
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>
+

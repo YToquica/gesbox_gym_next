@@ -2,17 +2,21 @@
 
 import * as React from 'react'
 import Link from 'next/link'
-import { Dumbbell, Eye, EyeOff, Loader2, Lock, Mail, AlertCircle, User, CheckCircle, Smartphone, ArrowLeft } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
+import { Dumbbell, Eye, EyeOff, Loader2, Lock, Mail, AlertCircle, User, CheckCircle, Smartphone, ArrowLeft, KeyRound } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useLogin } from '../hooks/use-login'
 import { useRegister } from '../hooks/use-register'
+import { useForgotPassword } from '../hooks/use-forgot-password'
 import { cn } from '@/lib/utils'
 
 export function LoginForm() {
-  const [mode, setMode] = React.useState<'login' | 'register'>('login')
+  const [mode, setMode] = React.useState<'login' | 'register' | 'forgot'>('login')
+  const searchParams = useSearchParams()
+  const urlError = searchParams.get('error')
   
   // Login Hook
   const { form: loginForm, onSubmit: onLoginSubmit, isPending: isLoginPending, error: loginError } = useLogin()
@@ -34,6 +38,17 @@ export function LoginForm() {
   })
   const [showRegisterPassword, setShowRegisterPassword] = React.useState(false)
 
+  // Forgot Password Hook
+  const {
+    form: forgotForm,
+    onSubmit: onForgotSubmit,
+    isPending: isForgotPending,
+    error: forgotError,
+    message: forgotMessage,
+    isSuccess: isForgotSuccess,
+    resetState: resetForgotState,
+  } = useForgotPassword()
+
   const {
     register: loginRegister,
     formState: { errors: loginErrors },
@@ -43,6 +58,11 @@ export function LoginForm() {
     register: registerRegister,
     formState: { errors: registerErrors },
   } = registerForm
+
+  const {
+    register: forgotRegister,
+    formState: { errors: forgotErrors },
+  } = forgotForm
 
   return (
     <div className="flex min-h-screen w-full items-center justify-center p-4 bg-surface-container-low dark:bg-black">
@@ -104,32 +124,34 @@ export function LoginForm() {
             </div>
 
             {/* Selector de Modo (Tabs) */}
-            <div className="grid grid-cols-2 gap-1 p-1 bg-muted rounded-lg mb-6">
-              <button
-                type="button"
-                onClick={() => setMode('login')}
-                className={cn(
-                  "py-1.5 text-xs font-semibold rounded-md transition-all duration-200",
-                  mode === 'login'
-                    ? "bg-background text-foreground shadow-xs"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Iniciar Sesión
-              </button>
-              <button
-                type="button"
-                onClick={() => setMode('register')}
-                className={cn(
-                  "py-1.5 text-xs font-semibold rounded-md transition-all duration-200",
-                  mode === 'register'
-                    ? "bg-background text-foreground shadow-xs"
-                    : "text-muted-foreground hover:text-foreground"
-                )}
-              >
-                Registrar Cliente
-              </button>
-            </div>
+            {mode !== 'forgot' && (
+              <div className="grid grid-cols-2 gap-1 p-1 bg-muted rounded-lg mb-6">
+                <button
+                  type="button"
+                  onClick={() => setMode('login')}
+                  className={cn(
+                    "py-1.5 text-xs font-semibold rounded-md transition-all duration-200",
+                    mode === 'login'
+                      ? "bg-background text-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Iniciar Sesión
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMode('register')}
+                  className={cn(
+                    "py-1.5 text-xs font-semibold rounded-md transition-all duration-200",
+                    mode === 'register'
+                      ? "bg-background text-foreground shadow-xs"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                >
+                  Registrar Cliente
+                </button>
+              </div>
+            )}
 
             {mode === 'login' ? (
               /* ================== FORMULARIO DE INICIO DE SESIÓN ================== */
@@ -144,6 +166,18 @@ export function LoginForm() {
                 </CardHeader>
 
                 <form onSubmit={onLoginSubmit} className="space-y-4">
+                  {/* Alerta de Error de URL (ej. enlace expirado) */}
+                  {urlError && (
+                    <div className="flex items-start gap-2 p-3 text-xs rounded-lg border border-amber-500/20 bg-amber-500/10 text-amber-600 dark:text-amber-400 animate-[fadeIn_0.2s_ease-out]">
+                      <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                      <p className="font-medium">
+                        {urlError === 'enlace_invalido_o_expirado'
+                          ? 'El enlace de recuperación ha expirado o no es válido. Puedes solicitar uno nuevo a continuación.'
+                          : 'Ocurrió un error en la autenticación. Por favor, intenta de nuevo.'}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Alerta de Error General */}
                   {loginError && (
                     <div className="flex items-start gap-2 p-3 text-xs rounded-lg border border-brand-error/20 bg-brand-error/10 text-brand-error animate-[fadeIn_0.2s_ease-out]">
@@ -211,9 +245,16 @@ export function LoginForm() {
                       </p>
                     )}
                     <div className="flex justify-end pt-0.5">
-                      <a href="#" onClick={(e) => { e.preventDefault(); alert('Funcionalidad en desarrollo.') }} className="text-[11px] font-medium text-brand-primary hover:underline">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          resetForgotState()
+                          setMode('forgot')
+                        }}
+                        className="text-[11px] font-medium text-brand-primary hover:underline"
+                      >
                         ¿Olvidaste tu contraseña?
-                      </a>
+                      </button>
                     </div>
                   </div>
 
@@ -245,7 +286,7 @@ export function LoginForm() {
                   </p>
                 </form>
               </div>
-            ) : (
+            ) : mode === 'register' ? (
               /* ================== FORMULARIO DE REGISTRO DE CLIENTE ================== */
               <div>
                 <CardHeader className="p-0 mb-6">
@@ -454,6 +495,138 @@ export function LoginForm() {
                         'Registrar e Iniciar Sesión'
                       )}
                     </Button>
+
+                    <p className="text-[10px] text-center text-muted-foreground/70 mt-2">
+                      Protegido por Google reCAPTCHA v3.{' '}
+                      <a href="https://policies.google.com/privacy" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                        Privacidad
+                      </a>{' '}
+                      y{' '}
+                      <a href="https://policies.google.com/terms" target="_blank" rel="noreferrer" className="underline hover:text-foreground">
+                        Términos
+                      </a>.
+                    </p>
+                  </form>
+                )}
+              </div>
+            ) : (
+              /* ================== FORMULARIO DE RECUPERACIÓN DE CONTRASEÑA ================== */
+              <div className="animate-[fadeIn_0.2s_ease-out]">
+                <CardHeader className="p-0 mb-6">
+                  <div className="flex items-center gap-2 mb-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        resetForgotState()
+                        setMode('login')
+                      }}
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors group"
+                    >
+                      <ArrowLeft className="h-3.5 w-3.5 transition-transform group-hover:-translate-x-0.5" />
+                      <span>Volver al inicio de sesión</span>
+                    </button>
+                  </div>
+                  <CardTitle className="font-heading text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                    <KeyRound className="h-6 w-6 text-brand-primary" />
+                    Recuperar Contraseña
+                  </CardTitle>
+                  <CardDescription className="text-sm text-muted-foreground mt-1">
+                    Ingresa el correo electrónico asociado a tu cuenta de GESBOX para enviarte un enlace de recuperación seguro.
+                  </CardDescription>
+                </CardHeader>
+
+                {isForgotSuccess ? (
+                  <div className="space-y-4 animate-[fadeIn_0.2s_ease-out]">
+                    <div className="flex items-start gap-3 p-4 text-xs rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300">
+                      <CheckCircle className="h-5 w-5 shrink-0 mt-0.5 text-emerald-600 dark:text-emerald-400" />
+                      <div className="space-y-1">
+                        <p className="font-semibold text-sm">¡Enlace enviado!</p>
+                        <p className="leading-relaxed">{forgotMessage}</p>
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-muted/50 rounded-lg text-xs text-muted-foreground space-y-1.5">
+                      <p className="font-medium text-foreground">💡 Pasos siguientes:</p>
+                      <ul className="list-disc list-inside space-y-1 text-[11px]">
+                        <li>Revisa tu bandeja de entrada y haz clic en el enlace.</li>
+                        <li>Si no lo ves, comprueba tu carpeta de Spam o Correo no deseado.</li>
+                        <li>El enlace tiene una vigencia limitada por tu seguridad.</li>
+                      </ul>
+                    </div>
+
+                    <Button
+                      type="button"
+                      onClick={() => {
+                        resetForgotState()
+                        setMode('login')
+                      }}
+                      className="w-full h-10 bg-brand-primary text-white hover:bg-brand-primary/95 transition-all font-medium"
+                    >
+                      Volver a Iniciar Sesión
+                    </Button>
+                  </div>
+                ) : (
+                  <form onSubmit={onForgotSubmit} className="space-y-4">
+                    {/* Alerta de Error General */}
+                    {forgotError && (
+                      <div className="flex items-start gap-2 p-3 text-xs rounded-lg border border-brand-error/20 bg-brand-error/10 text-brand-error animate-[fadeIn_0.2s_ease-out]">
+                        <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                        <p className="font-medium">{forgotError}</p>
+                      </div>
+                    )}
+
+                    {/* Campo: Correo Electrónico */}
+                    <div className="space-y-1.5">
+                      <Label htmlFor="forgot-email" className="text-xs font-semibold text-foreground">
+                        Correo Electrónico
+                      </Label>
+                      <div className="relative">
+                        <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="forgot-email"
+                          type="email"
+                          placeholder="nombre@gimnasio.com"
+                          className="pl-9 pr-4 h-9 border-input focus:border-ring focus:ring-ring bg-surface-container-lowest"
+                          disabled={isForgotPending}
+                          {...forgotRegister('email')}
+                        />
+                      </div>
+                      {forgotErrors.email && (
+                        <p className="text-[11px] font-medium text-brand-error animate-[fadeIn_0.2s_ease-out]">
+                          {forgotErrors.email.message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Botón de Enviar Enlace */}
+                    <Button
+                      type="submit"
+                      className="w-full h-10 mt-2 bg-brand-primary text-white hover:bg-brand-primary/95 transition-all flex items-center justify-center gap-2 font-medium"
+                      disabled={isForgotPending}
+                    >
+                      {isForgotPending ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                          Enviando enlace...
+                        </>
+                      ) : (
+                        'Enviar Enlace de Recuperación'
+                      )}
+                    </Button>
+
+                    <div className="text-center pt-2">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          resetForgotState()
+                          setMode('login')
+                        }}
+                        className="text-xs font-medium text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                      >
+                        <ArrowLeft className="h-3 w-3" />
+                        <span>Recordé mi contraseña, volver al login</span>
+                      </button>
+                    </div>
 
                     <p className="text-[10px] text-center text-muted-foreground/70 mt-2">
                       Protegido por Google reCAPTCHA v3.{' '}
