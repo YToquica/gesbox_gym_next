@@ -3,74 +3,68 @@
 @variant dark (&:where(.dark, .dark *));
 
 :root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
 
-  --background: #f8f9fa;
-
-  --foreground: #191c1d;
-
-
-
-  --surface: #f8f9fa;
-  --surface-dim: #d9dadb;
-  --surface-bright: #f8f9fa;
+  --surface: #f8fafc;
+  --surface-dim: #e2e8f0;
+  --surface-bright: #ffffff;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f3f4f5;
-  --surface-container: #edeeef;
-  --surface-container-high: #e7e8e9;
-  --surface-container-highest: #e1e3e4;
-  --on-surface: #191c1d;
-  --on-surface-variant: #5a4137;
-  --inverse-surface: #2e3132;
-  --inverse-on-surface: #f0f1f2;
-  --outline: #8e7165;
-  --outline-variant: #e2bfb2;
-  --surface-tint: #ff6b1a;
+  --surface-container-low: #f1f5f9;
+  --surface-container: #e2e8f0;
+  --surface-container-high: #cbd5e1;
+  --surface-container-highest: #94a3b8;
+  --on-surface: #0f172a;
+  --on-surface-variant: #334155;
+  --inverse-surface: #1e293b;
+  --inverse-on-surface: #f8fafc;
+  --outline: #64748b;
+  --outline-variant: #cbd5e1;
+  --surface-tint: #ea580c;
 
-  --primary: #ff6b1a;
+  --primary: #ea580c;
   --on-primary: #ffffff;
-  --primary-container: #ff6b1a;
+  --primary-container: #f97316;
+  --on-primary-container: #431407;
+  --inverse-primary: #ffedd5;
 
-  --on-primary-container: #591e00;
-  --inverse-primary: #ffb596;
-
-  --secondary: #5d5e61;
+  --secondary: #475569;
   --on-secondary: #ffffff;
-  --secondary-container: #e2e2e5;
-  --on-secondary-container: #636467;
+  --secondary-container: #e2e8f0;
+  --on-secondary-container: #1e293b;
 
-  --tertiary: #505f76;
+  --tertiary: #4f46e5;
   --on-tertiary: #ffffff;
-  --tertiary-container: #8a9ab2;
-  --on-tertiary-container: #223246;
+  --tertiary-container: #e0e7ff;
+  --on-tertiary-container: #312e81;
 
-  --error: #ba1a1a;
+  --error: #dc2626;
   --on-error: #ffffff;
-  --error-container: #ffdad6;
-  --on-error-container: #93000a;
+  --error-container: #fee2e2;
+  --on-error-container: #7f1d1d;
 
-  --primary-fixed: #ffdbcd;
-  --primary-fixed-dim: #ffb596;
-  --on-primary-fixed: #360f00;
-  --on-primary-fixed-variant: #7d2d00;
+  --primary-fixed: #ffedd5;
+  --primary-fixed-dim: #fed7aa;
+  --on-primary-fixed: #431407;
+  --on-primary-fixed-variant: #9a3412;
 
-  --secondary-fixed: #e2e2e5;
-  --secondary-fixed-dim: #c6c6c9;
-  --on-secondary-fixed: #1a1c1e;
-  --on-secondary-fixed-variant: #454749;
+  --secondary-fixed: #e2e8f0;
+  --secondary-fixed-dim: #cbd5e1;
+  --on-secondary-fixed: #0f172a;
+  --on-secondary-fixed-variant: #334155;
 
-  --tertiary-fixed: #d3e4fe;
-  --tertiary-fixed-dim: #b7c8e1;
-  --on-tertiary-fixed: #0b1c30;
-  --on-tertiary-fixed-variant: #38485d;
+  --tertiary-fixed: #e0e7ff;
+  --tertiary-fixed-dim: #c7d2fe;
+  --on-tertiary-fixed: #1e1b4b;
+  --on-tertiary-fixed-variant: #3730a3;
 
-  --surface-variant: #e1e3e4;
+  --surface-variant: #f1f5f9;
 
+  --card: #ffffff;
+  --card-foreground: #0f172a;
 
-  --card: var(--surface-container-lowest);
-  --card-foreground: var(--on-surface);
-
-  --popover: var(--surface-container-lowest);
-  --popover-foreground: var(--on-surface);
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
 
   --primary-shadcn: var(--primary);
   --primary-foreground-shadcn: var(--on-primary);
@@ -78,20 +72,19 @@
   --secondary-shadcn: var(--secondary);
   --secondary-foreground-shadcn: var(--on-secondary);
 
-  --muted: var(--surface-variant);
-  --muted-foreground: var(--secondary);
+  --muted: #f1f5f9;
+  --muted-foreground: #475569;
 
-  --accent: var(--surface-container);
-  --accent-foreground: var(--on-surface);
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
 
   --destructive: var(--error);
   --destructive-foreground: var(--on-error);
 
   --border: #e2e8f0;
 
-  --input: var(--outline-variant);
-  --ring: var(--primary-container);
-
+  --input: #cbd5e1;
+  --ring: var(--primary);
 
   --radius-sm-val: 0.25rem;
   --radius-val: 0.5rem;
@@ -99,7 +92,7 @@
   --radius-lg-val: 1rem;
   --radius-xl-val: 1.5rem;
 
-  --shadow-ambient-val: 0px 10px 25px -5px rgba(0, 0, 0, 0.05);
+  --shadow-ambient-val: 0px 10px 25px -5px rgba(0, 0, 0, 0.06);
 }
 
 .dark {

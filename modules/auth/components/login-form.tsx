@@ -157,9 +157,9 @@ export function LoginForm() {
               /* ================== FORMULARIO DE INICIO DE SESIÓN ================== */
               <div>
                 <CardHeader className="p-0 mb-6">
-                  <CardTitle className="font-heading text-2xl font-bold tracking-tight text-foreground">
+                  <h1 className="font-heading text-2xl font-black tracking-tight text-foreground">
                     ¡Bienvenido de nuevo!
-                  </CardTitle>
+                  </h1>
                   <CardDescription className="text-sm text-muted-foreground mt-1">
                     Ingresa tus credenciales de Recepcionista o Administrador para acceder.
                   </CardDescription>
@@ -290,9 +290,9 @@ export function LoginForm() {
               /* ================== FORMULARIO DE REGISTRO DE CLIENTE ================== */
               <div>
                 <CardHeader className="p-0 mb-6">
-                  <CardTitle className="font-heading text-2xl font-bold tracking-tight text-foreground">
+                  <h1 className="font-heading text-2xl font-black tracking-tight text-foreground">
                     Registro de Nuevo Cliente
-                  </CardTitle>
+                  </h1>
                   <CardDescription className="text-sm text-muted-foreground mt-1">
                     Crea tu cuenta de cliente para poder ser validado en mostrador.
                   </CardDescription>
@@ -526,10 +526,10 @@ export function LoginForm() {
                       <span>Volver al inicio de sesión</span>
                     </button>
                   </div>
-                  <CardTitle className="font-heading text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+                  <h1 className="font-heading text-2xl font-black tracking-tight text-foreground flex items-center gap-2">
                     <KeyRound className="h-6 w-6 text-brand-primary" />
                     Recuperar Contraseña
-                  </CardTitle>
+                  </h1>
                   <CardDescription className="text-sm text-muted-foreground mt-1">
                     Ingresa el correo electrónico asociado a tu cuenta de GESBOX para enviarte un enlace de recuperación seguro.
                   </CardDescription>

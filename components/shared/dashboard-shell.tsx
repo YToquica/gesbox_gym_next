@@ -79,25 +79,41 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
     }
   }
 
+  // Obtener título semántico para el encabezado H1
+  const getPageTitle = (path: string) => {
+    switch (path) {
+      case '/dashboard':
+        return 'Panel de Control'
+      case '/dashboard/recepcion':
+        return 'Recepción y Check-In'
+      case '/dashboard/clientes':
+        return 'Gestión de Clientes'
+      case '/dashboard/planes':
+        return 'Planes de Membresía'
+      default:
+        return 'Panel de Control'
+    }
+  }
+
   return (
     <div className="flex h-screen overflow-hidden bg-background text-foreground transition-colors duration-200">
       {/* Sidebar para pantallas grandes (Desktop) */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:flex-shrink-0 border-r border-border bg-card">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:flex-shrink-0 border-r border-border bg-card shadow-xs">
         {/* Header del Sidebar */}
         <div className="flex h-16 items-center px-6 border-b border-border bg-card">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-primary text-white">
+          <Link href="/dashboard" prefetch={true} className="flex items-center gap-2">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-primary text-white shadow-sm">
               <Dumbbell className="h-5 w-5" />
             </div>
-            <span className="font-heading text-xl font-black tracking-tight">
+            <span className="font-heading text-xl font-black tracking-tight text-foreground">
               GES<span className="text-brand-primary">BOX</span>
             </span>
           </Link>
         </div>
 
         {/* Links de Navegación */}
-        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-          <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5" aria-label="Navegación principal del panel">
+          <div className="px-3 mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
             Administración
           </div>
           {menuItems.map((item) => {
@@ -107,11 +123,12 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200 group",
                   isActive
                     ? "bg-brand-primary text-white shadow-sm"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
                 <Icon className={cn("h-4 w-4 shrink-0 transition-transform group-hover:scale-110", isActive ? "text-white" : "text-muted-foreground group-hover:text-foreground")} />
@@ -123,16 +140,16 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
 
         {/* Footer del Sidebar (Usuario e Info) */}
         <div className="p-4 border-t border-border bg-card">
-          <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 mb-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary font-bold text-sm">
+          <div className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/60 mb-3 border border-border/60">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary text-white font-bold text-sm shadow-xs">
               {profile.nombre_completo.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-foreground truncate">
+              <p className="text-xs font-bold text-foreground truncate">
                 {profile.nombre_completo}
               </p>
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider text-brand-primary">
-                <Shield className="h-2.5 w-2.5" />
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase font-black tracking-wider text-brand-primary">
+                <Shield className="h-3 w-3" />
                 {getRoleLabel(profile.rol)}
               </span>
             </div>
@@ -143,7 +160,7 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
               await fetch('/auth/signout', { method: 'POST' })
               window.location.href = '/login'
             }}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-destructive hover:bg-destructive/10 transition-colors w-full"
           >
             <LogOut className="h-4 w-4 shrink-0" />
             Cerrar Sesión
@@ -167,24 +184,25 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
         )}
       >
         <div className="flex h-16 items-center justify-between px-6 border-b border-border">
-          <Link href="/dashboard" className="flex items-center gap-2" onClick={toggleSidebar}>
+          <Link href="/dashboard" prefetch={true} className="flex items-center gap-2" onClick={toggleSidebar}>
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-brand-primary text-white">
               <Dumbbell className="h-5 w-5" />
             </div>
-            <span className="font-heading text-xl font-black tracking-tight">
+            <span className="font-heading text-xl font-black tracking-tight text-foreground">
               GES<span className="text-brand-primary">BOX</span>
             </span>
           </Link>
           <button
             onClick={toggleSidebar}
-            className="p-1 rounded-md hover:bg-accent text-muted-foreground"
+            className="p-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+            aria-label="Cerrar menú lateral"
           >
             <X className="h-5 w-5" />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1">
-          <div className="px-3 mb-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+        <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5" aria-label="Navegación móvil del panel">
+          <div className="px-3 mb-2 text-xs font-bold text-muted-foreground uppercase tracking-wider">
             Administración
           </div>
           {menuItems.map((item) => {
@@ -194,11 +212,12 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200",
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all duration-200",
                   isActive
                     ? "bg-brand-primary text-white shadow-sm"
-                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
                 onClick={toggleSidebar}
               >
@@ -210,16 +229,16 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
         </nav>
 
         <div className="p-4 border-t border-border">
-          <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50 mb-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary font-bold text-sm">
+          <div className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/60 mb-3 border border-border/60">
+            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-brand-primary text-white font-bold text-sm">
               {profile.nombre_completo.charAt(0).toUpperCase()}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-foreground truncate">
+              <p className="text-xs font-bold text-foreground truncate">
                 {profile.nombre_completo}
               </p>
-              <span className="inline-flex items-center gap-1 text-[10px] uppercase font-bold tracking-wider text-brand-primary">
-                <Shield className="h-2.5 w-2.5" />
+              <span className="inline-flex items-center gap-1 text-[10px] uppercase font-black tracking-wider text-brand-primary">
+                <Shield className="h-3 w-3" />
                 {getRoleLabel(profile.rol)}
               </span>
             </div>
@@ -230,7 +249,7 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
               await fetch('/auth/signout', { method: 'POST' })
               window.location.href = '/login'
             }}
-            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors w-full"
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold text-destructive hover:bg-destructive/10 transition-colors w-full"
           >
             <LogOut className="h-4 w-4 shrink-0" />
             Cerrar Sesión
@@ -245,23 +264,24 @@ export default function DashboardShell({ children, profile }: DashboardShellProp
           <div className="flex items-center gap-4">
             <button
               onClick={toggleSidebar}
-              className="lg:hidden p-2 -ml-2 rounded-md hover:bg-accent text-muted-foreground"
+              className="lg:hidden p-2 -ml-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground"
+              aria-label="Abrir menú lateral"
             >
               <Menu className="h-5 w-5" />
             </button>
-            <h1 className="text-lg font-bold font-heading text-foreground capitalize">
-              {pathname === '/dashboard' ? 'Resumen Operativo' : pathname.split('/').pop()}
+            <h1 className="text-lg font-black font-heading text-foreground tracking-tight">
+              {getPageTitle(pathname)}
             </h1>
           </div>
           
           <div className="flex items-center gap-4">
             <div className="hidden sm:flex flex-col items-end text-xs">
-              <span className="font-semibold text-foreground">{profile.nombre_completo}</span>
-              <span className="text-[10px] uppercase font-bold tracking-wider text-brand-primary">
+              <span className="font-bold text-foreground">{profile.nombre_completo}</span>
+              <span className="text-[10px] uppercase font-black tracking-wider text-brand-primary">
                 {getRoleLabel(profile.rol)}
               </span>
             </div>
-            <div className="h-8 w-8 rounded-full bg-brand-primary/10 text-brand-primary flex items-center justify-center font-bold text-sm border border-brand-primary/20">
+            <div className="h-8 w-8 rounded-full bg-brand-primary text-white flex items-center justify-center font-bold text-sm shadow-xs">
               {profile.nombre_completo.charAt(0).toUpperCase()}
             </div>
           </div>

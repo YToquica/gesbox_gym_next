@@ -15,13 +15,9 @@ export default async function DashboardLayout({
   // 1. Obtener la sesión del usuario
   const {
     data: { user },
-    error: authError,
   } = await supabase.auth.getUser()
-  
-  console.log('[DEBUG LAYOUT] Auth user:', user ? user.id : null, 'Auth error:', authError)
 
   if (!user) {
-    console.log('[DEBUG LAYOUT] Redirecting to login because !user')
     redirect('/login')
   }
 
@@ -32,10 +28,7 @@ export default async function DashboardLayout({
     .eq('id', user.id)
     .single()
 
-  console.log('[DEBUG LAYOUT] Profile:', profile, 'Profile error:', error)
-
   if (error || !profile) {
-    console.log('[DEBUG LAYOUT] Redirecting to login because error || !profile')
     redirect('/login')
   }
 

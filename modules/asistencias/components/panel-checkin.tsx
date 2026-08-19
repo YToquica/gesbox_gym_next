@@ -50,8 +50,19 @@ export function PanelCheckIn({
     inputRef.current?.focus()
   }, [inputRef])
 
-  // Desestructurar registro de react-hook-form para fusionar refs
-  const { ref: registerRef, ...restRegister } = register('numero_documento')
+  // Atajo de teclado: Escape limpia la pantalla de resultado inmediatamente
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && lastResult) {
+        clearLastResult()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [lastResult, clearLastResult])
+
+  // Desestructurar registro de react-hook-form para fusionar refs y eventos
+  const { ref: registerRef, onChange: formOnChange, ...restRegister } = register('numero_documento')
 
   // Calcular días restantes de la membresía activa
   const getDaysLeft = (fechaFinStr: string) => {
@@ -78,12 +89,12 @@ export function PanelCheckIn({
     <Card className="w-full border border-border bg-card shadow-sm hover:shadow-ambient transition-all duration-300">
       <CardHeader className="pb-4">
         <div className="flex items-center gap-2">
-          <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary">
+          <div className="p-2 rounded-lg bg-brand-primary/10 text-brand-primary border border-brand-primary/20">
             <ScanLine className="h-5 w-5 animate-pulse" />
           </div>
           <div>
-            <CardTitle className="text-lg font-bold font-heading">Control de Acceso</CardTitle>
-            <CardDescription className="text-xs">
+            <h3 className="text-lg font-black font-heading text-foreground">Control de Acceso y Validación</h3>
+            <CardDescription className="text-xs text-muted-foreground">
               Digita o escanea el documento de identidad del cliente
             </CardDescription>
           </div>
@@ -94,7 +105,7 @@ export function PanelCheckIn({
         {/* Formulario de Entrada */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           <div className="space-y-1.5">
-            <Label htmlFor="numero_documento" className="text-xs font-semibold text-muted-foreground">
+            <Label htmlFor="numero_documento" className="text-xs font-bold text-foreground">
               Cédula / Documento de Identidad
             </Label>
             <div className="relative flex gap-2">
@@ -110,6 +121,10 @@ export function PanelCheckIn({
                   )}
                   disabled={isPending}
                   {...restRegister}
+                  onChange={(e) => {
+                    if (lastResult) clearLastResult()
+                    formOnChange(e)
+                  }}
                   ref={(e) => {
                     registerRef(e)
                     inputRef.current = e
@@ -119,7 +134,7 @@ export function PanelCheckIn({
               <Button 
                 type="submit" 
                 disabled={isPending}
-                className="bg-brand-primary text-white hover:bg-brand-primary/95 h-11 px-5 text-sm font-semibold shrink-0"
+                className="bg-brand-primary text-white hover:bg-brand-primary/90 h-11 px-5 text-sm font-bold shadow-sm shrink-0"
               >
                 {isPending ? (
                   <Loader2 className="h-4 w-4 animate-spin" />
@@ -129,7 +144,7 @@ export function PanelCheckIn({
               </Button>
             </div>
             {errors.numero_documento && (
-              <p className="text-xs font-medium text-brand-error animate-fade-in mt-1">
+              <p className="text-xs font-semibold text-brand-error animate-fade-in mt-1">
                 {errors.numero_documento.message}
               </p>
             )}
@@ -142,63 +157,64 @@ export function PanelCheckIn({
             {/* Botón de limpiar */}
             <button
               onClick={clearLastResult}
-              className="absolute right-3 top-3 p-1 rounded-full bg-white/20 hover:bg-white/30 text-foreground/75 dark:text-white/60 hover:text-foreground transition-colors z-10"
-              title="Limpiar pantalla"
+              className="absolute right-3 top-3 p-1.5 rounded-full bg-black/10 hover:bg-black/20 text-foreground transition-colors z-10"
+              title="Limpiar pantalla (Esc)"
+              aria-label="Cerrar resultado de validación"
             >
               <X className="h-4 w-4" />
             </button>
 
             {lastResult.status === 'success' ? (
               /* ESTADO: ACCESO AUTORIZADO (VERDE) */
-              <div className="border border-green-200 dark:border-green-800/30 rounded-2xl bg-green-500/10 dark:bg-green-950/20 p-5 md:p-6 flex flex-col items-center text-center space-y-4 shadow-xs">
-                <div className="h-16 w-16 rounded-full bg-green-500/20 text-green-600 dark:text-green-400 flex items-center justify-center border border-green-500/30 animate-pulse">
+              <div className="border border-emerald-300 dark:border-emerald-800/40 rounded-2xl bg-emerald-500/15 dark:bg-emerald-950/30 p-5 md:p-6 flex flex-col items-center text-center space-y-4 shadow-xs">
+                <div className="h-16 w-16 rounded-full bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/40 animate-pulse">
                   <CheckCircle2 className="h-10 w-10 stroke-[2.5]" />
                 </div>
                 
                 <div className="space-y-1">
-                  <span className="text-[10px] tracking-widest font-black uppercase text-green-600 dark:text-green-400">
+                  <span className="text-[11px] tracking-widest font-black uppercase text-emerald-800 dark:text-emerald-400">
                     Ingreso Registrado
                   </span>
-                  <h3 className="font-heading font-black text-2xl text-green-700 dark:text-green-400 leading-tight">
+                  <h3 className="font-heading font-black text-2xl text-emerald-800 dark:text-emerald-300 leading-tight">
                     {lastResult.message}
                   </h3>
                 </div>
 
-                <div className="w-full bg-card rounded-xl border border-green-200/40 dark:border-green-800/20 p-4 space-y-3 text-left">
+                <div className="w-full bg-card rounded-xl border border-emerald-200 dark:border-emerald-800/30 p-4 space-y-3 text-left shadow-xs">
                   <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-full bg-green-500/10 text-green-600 dark:text-green-400 flex items-center justify-center font-bold text-base">
+                    <div className="h-10 w-10 rounded-full bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 flex items-center justify-center font-black text-base border border-emerald-500/30">
                       {lastResult.data.profile.nombre_completo.charAt(0).toUpperCase()}
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-foreground truncate">
                         {lastResult.data.profile.nombre_completo}
                       </p>
-                      <p className="text-[11px] text-muted-foreground font-mono">
+                      <p className="text-xs text-muted-foreground font-mono">
                         {lastResult.data.profile.tipo_documento || 'CC'}: {lastResult.data.profile.numero_documento}
                       </p>
                     </div>
                   </div>
 
-                  <div className="border-t border-border/50 pt-2 flex flex-col gap-2 text-xs">
+                  <div className="border-t border-border pt-2.5 flex flex-col gap-2 text-xs">
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground flex items-center gap-1">
-                        <CreditCard className="h-3.5 w-3.5 text-green-600" /> Plan Adquirido:
+                      <span className="text-muted-foreground font-medium flex items-center gap-1">
+                        <CreditCard className="h-3.5 w-3.5 text-emerald-700" /> Plan Adquirido:
                       </span>
                       <span className="font-bold text-foreground">
                         {lastResult.data.membresiaActiva.planes?.nombre}
                       </span>
                     </div>
                     <div className="flex justify-between items-center">
-                      <span className="text-muted-foreground flex items-center gap-1">
-                        <Calendar className="h-3.5 w-3.5 text-green-600" /> Fecha Vencimiento:
+                      <span className="text-muted-foreground font-medium flex items-center gap-1">
+                        <Calendar className="h-3.5 w-3.5 text-emerald-700" /> Fecha Vencimiento:
                       </span>
-                      <span className="font-semibold text-foreground">
+                      <span className="font-bold text-foreground">
                         {new Date(lastResult.data.membresiaActiva.fecha_fin + 'T00:00:00').toLocaleDateString('es-CO')}
                       </span>
                     </div>
-                    <div className="flex justify-between items-center mt-1 pt-1.5 border-t border-dashed border-border/50">
-                      <span className="text-muted-foreground text-[10px] uppercase font-bold tracking-wider">Vigencia:</span>
-                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-500/20 text-green-700 dark:text-green-400 uppercase tracking-wide">
+                    <div className="flex justify-between items-center mt-1 pt-1.5 border-t border-dashed border-border">
+                      <span className="text-muted-foreground text-xs uppercase font-bold tracking-wider">Vigencia:</span>
+                      <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-800 dark:text-emerald-300 uppercase tracking-wide">
                         {getDaysLeft(lastResult.data.membresiaActiva.fecha_fin)}
                       </span>
                     </div>
@@ -207,56 +223,56 @@ export function PanelCheckIn({
               </div>
             ) : (
               /* ESTADO: ACCESO DENEGADO (ROJO) */
-              <div className="border border-red-200 dark:border-red-900/30 rounded-2xl bg-red-500/10 dark:bg-red-950/20 p-5 md:p-6 flex flex-col items-center text-center space-y-4 shadow-xs animate-shake">
-                <div className="h-16 w-16 rounded-full bg-red-500/20 text-red-600 dark:text-red-400 flex items-center justify-center border border-red-500/30">
+              <div className="border border-red-300 dark:border-red-900/40 rounded-2xl bg-red-500/15 dark:bg-red-950/30 p-5 md:p-6 flex flex-col items-center text-center space-y-4 shadow-xs animate-shake">
+                <div className="h-16 w-16 rounded-full bg-red-500/20 text-red-700 dark:text-red-400 flex items-center justify-center border border-red-500/40">
                   <XCircle className="h-10 w-10 stroke-[2.5]" />
                 </div>
 
                 <div className="space-y-1">
-                  <span className="text-[10px] tracking-widest font-black uppercase text-red-600 dark:text-red-400">
+                  <span className="text-[11px] tracking-widest font-black uppercase text-red-800 dark:text-red-400">
                     Ingreso Bloqueado
                   </span>
-                  <h3 className="font-heading font-black text-2xl text-red-600 dark:text-red-400 leading-tight">
+                  <h3 className="font-heading font-black text-2xl text-red-700 dark:text-red-300 leading-tight">
                     Acceso Denegado
                   </h3>
                 </div>
 
                 {lastResult.code === 'CLIENT_NOT_FOUND' ? (
-                  <div className="w-full bg-card rounded-xl border border-red-200/40 dark:border-red-900/20 p-4 text-center">
-                    <AlertTriangle className="h-6 w-6 text-red-500 mx-auto mb-2" />
-                    <p className="text-xs font-semibold text-foreground">Cliente No Encontrado</p>
-                    <p className="text-[11px] text-muted-foreground mt-1 max-w-[240px] mx-auto">
-                      El número de documento ingresado no coincide con ningún cliente registrado. Por favor, realiza la afiliación primero.
+                  <div className="w-full bg-card rounded-xl border border-red-200 dark:border-red-900/30 p-4 text-center">
+                    <AlertTriangle className="h-6 w-6 text-red-600 mx-auto mb-2" />
+                    <p className="text-xs font-bold text-foreground">Cliente No Encontrado</p>
+                    <p className="text-xs text-muted-foreground mt-1 max-w-[260px] mx-auto font-medium">
+                      El número de documento ingresado no coincide con ningún cliente registrado. Realiza la afiliación en Clientes primero.
                     </p>
                   </div>
                 ) : (
-                  <div className="w-full bg-card rounded-xl border border-red-200/40 dark:border-red-900/20 p-4 space-y-3 text-left">
+                  <div className="w-full bg-card rounded-xl border border-red-200 dark:border-red-900/30 p-4 space-y-3 text-left shadow-xs">
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 flex items-center justify-center font-bold text-base">
+                      <div className="h-10 w-10 rounded-full bg-red-500/20 text-red-700 dark:text-red-400 flex items-center justify-center font-black text-base border border-red-500/30">
                         {lastResult.data.profile.nombre_completo.charAt(0).toUpperCase()}
                       </div>
                       <div className="min-w-0">
                         <p className="text-sm font-bold text-foreground truncate">
                           {lastResult.data.profile.nombre_completo}
                         </p>
-                        <p className="text-[11px] text-muted-foreground font-mono">
+                        <p className="text-xs text-muted-foreground font-mono">
                           {lastResult.data.profile.tipo_documento || 'CC'}: {lastResult.data.profile.numero_documento}
                         </p>
                       </div>
                     </div>
 
-                    <div className="border-t border-border/50 pt-2 flex flex-col gap-1 text-xs">
-                      <p className="text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+                    <div className="border-t border-border pt-2.5 flex flex-col gap-1 text-xs">
+                      <p className="text-red-700 dark:text-red-400 font-bold flex items-center gap-1.5">
                         <AlertTriangle className="h-4 w-4 shrink-0" />
                         {lastResult.message}
                       </p>
                       {lastResult.data.ultimaMembresia ? (
-                        <div className="mt-1 pt-1 border-t border-dashed border-border/50 text-[11px] text-muted-foreground">
-                          <p>Último plan: <strong>{lastResult.data.ultimaMembresia.planes?.nombre}</strong></p>
+                        <div className="mt-1 pt-1 border-t border-dashed border-border text-xs text-muted-foreground">
+                          <p>Último plan: <strong className="text-foreground">{lastResult.data.ultimaMembresia.planes?.nombre}</strong></p>
                           <p>Expiró el: {new Date(lastResult.data.ultimaMembresia.fecha_fin + 'T00:00:00').toLocaleDateString('es-CO')}</p>
                         </div>
                       ) : (
-                        <p className="text-[11px] text-muted-foreground italic mt-1">Este cliente no registra membresías anteriores.</p>
+                        <p className="text-xs text-muted-foreground italic mt-1 font-medium">Este cliente no registra membresías anteriores.</p>
                       )}
                     </div>
                   </div>
@@ -265,18 +281,18 @@ export function PanelCheckIn({
             )}
             
             {/* Nota de auto-limpieza */}
-            <p className="text-[10px] text-center text-muted-foreground/60 mt-2 italic">
-              Esta pantalla se restablecerá automáticamente en unos segundos.
+            <p className="text-xs text-center text-muted-foreground mt-2 font-medium">
+              Pulsa <kbd className="px-1.5 py-0.5 rounded bg-muted border border-border text-[10px] font-mono font-bold">Esc</kbd> o escribe para despachar al siguiente.
             </p>
           </div>
         )}
 
         {/* Estado inicial */}
         {!lastResult && !isPending && (
-          <div className="flex flex-col items-center justify-center p-8 text-center border-2 border-dashed border-border/50 rounded-2xl bg-muted/20 min-h-[180px]">
-            <User className="h-10 w-10 text-muted-foreground/60 stroke-1 mb-2 animate-pulse" />
-            <h4 className="text-xs font-bold text-foreground">Mostrador listo para recibir</h4>
-            <p className="text-[11px] text-muted-foreground max-w-xs mt-1">
+          <div className="flex flex-col items-center justify-center p-8 text-center border-2 border-dashed border-border rounded-2xl bg-muted/20 min-h-[180px]">
+            <User className="h-10 w-10 text-muted-foreground stroke-1 mb-2 animate-pulse" />
+            <h3 className="text-xs font-bold text-foreground">Mostrador listo para recibir</h3>
+            <p className="text-xs text-muted-foreground max-w-xs mt-1 font-medium">
               Coloca el foco en el campo de texto superior y escanea el código de barras o ingresa el documento del miembro.
             </p>
           </div>

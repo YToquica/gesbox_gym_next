@@ -55,20 +55,19 @@ export function ClienteDashboard({ initialData }: { initialData: any }) {
   return (
     <div className="space-y-8 animate-fade-in max-w-5xl mx-auto pb-12">
       {/* Header Profile */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-brand-primary to-orange-600 text-white shadow-md">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-orange-600 via-brand-primary to-amber-600 text-white shadow-md">
         <div className="flex items-center gap-4">
           <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center font-bold text-2xl border-2 border-white/40 shrink-0">
             {profile.nombre_completo.charAt(0).toUpperCase()}
           </div>
           <div>
             <h2 className="text-2xl font-black font-heading mb-1">¡Hola, {profile.nombre_completo}!</h2>
-            <p className="text-orange-100 text-sm">Gestiona tu membresía y planes desde tu portal personal.</p>
+            <p className="text-orange-50 text-sm font-medium">Gestiona tu membresía y planes desde tu portal personal.</p>
           </div>
         </div>
         <div className="flex gap-2 shrink-0">
           <Button
-            variant="outline"
-            className="bg-white/10 text-white border-white/20 hover:bg-white/20"
+            className="bg-white/20 hover:bg-white text-white hover:text-orange-700 border border-white/60 hover:border-white font-bold backdrop-blur-xs transition-all duration-200 shadow-xs"
             onClick={async () => {
               await fetch('/auth/signout', { method: 'POST' })
               window.location.href = '/login'

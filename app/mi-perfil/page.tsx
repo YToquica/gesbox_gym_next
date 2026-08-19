@@ -21,11 +21,11 @@ export default async function MiPerfilPage() {
   return (
     <div className="min-h-screen bg-background">
       <ForceLightMode />
-      <header className="sticky top-0 z-50 w-full border-b border-border/80 bg-background/95 backdrop-blur-md h-16 flex items-center px-6">
+      <header className="sticky top-0 z-50 w-full border-b border-border bg-card/95 backdrop-blur-md h-16 flex items-center px-6 shadow-xs">
         <div className="flex items-center gap-2">
-          <span className="font-heading text-xl font-black tracking-tight">
-            GES<span className="text-brand-primary">BOX</span> <span className="text-muted-foreground font-normal ml-2">Portal del Cliente</span>
-          </span>
+          <h1 className="font-heading text-xl font-black tracking-tight text-foreground">
+            GES<span className="text-brand-primary">BOX</span> <span className="text-muted-foreground font-semibold ml-2 text-sm">Portal del Cliente</span>
+          </h1>
         </div>
       </header>
 

@@ -142,10 +142,10 @@ export function useCheckIn() {
         })
       }
 
-      // Iniciar temporizador de 8 segundos para limpiar la pantalla si está inactivo
+      // Iniciar temporizador de 5 segundos para limpiar la pantalla si está inactivo
       timerRef.current = setTimeout(() => {
         setLastResult(null)
-      }, 8000)
+      }, 5000)
     },
     onError: (err: any) => {
       playAudioBeep('error')
@@ -157,7 +157,7 @@ export function useCheckIn() {
       
       timerRef.current = setTimeout(() => {
         setLastResult(null)
-      }, 8000)
+      }, 5000)
     },
   })
 

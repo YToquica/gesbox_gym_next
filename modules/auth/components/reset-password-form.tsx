@@ -107,10 +107,10 @@ export function ResetPasswordForm() {
             </div>
 
             <CardHeader className="p-0 mb-6">
-              <CardTitle className="font-heading text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <h1 className="font-heading text-2xl font-black tracking-tight text-foreground flex items-center gap-2">
                 <Lock className="h-6 w-6 text-brand-primary" />
                 Actualizar Contraseña
-              </CardTitle>
+              </h1>
               <CardDescription className="text-sm text-muted-foreground mt-1">
                 Ingresa tu nueva clave de acceso para restablecer tu cuenta.
               </CardDescription>

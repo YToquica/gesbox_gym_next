@@ -351,7 +351,7 @@ export default async function Home() {
                       <Check className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm text-foreground">Entrenadores Expertos</h4>
+                      <h3 className="font-bold text-sm text-foreground">Entrenadores Expertos</h3>
                       <p className="text-xs text-muted-foreground">Asesoría profesional en zona de musculación.</p>
                     </div>
                   </div>
@@ -360,7 +360,7 @@ export default async function Home() {
                       <Check className="h-5 w-5" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm text-foreground">Ambiente Motivador</h4>
+                      <h3 className="font-bold text-sm text-foreground">Ambiente Motivador</h3>
                       <p className="text-xs text-muted-foreground">Espacios amplios y música para potenciar tu entrenamiento.</p>
                     </div>
                   </div>
